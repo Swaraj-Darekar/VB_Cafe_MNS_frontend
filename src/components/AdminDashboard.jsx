@@ -1819,10 +1819,10 @@ const AdminDashboard = ({ onLogout }) => {
       {printingOrder && (
         <div className="receipt-print-area">
           <div className="receipt-header">
-            <h1 className="cafe-name">VB TERRACE</h1>
+            <h1 className="cafe-name">Yb's Cafe</h1>
             <p className="cafe-sub">Marunji Road, Hinjawadi</p>
             <div className="receipt-meta">
-              <span style={{ fontSize: '14px', fontWeight: '900' }}>TOKEN NO: {printingOrder.id.toString()}</span>
+              <span style={{ fontWeight: '900' }}>TOKEN NO: {printingOrder.id.toString()}</span>
               <span>Date: {printingOrder.timestamp}</span>
             </div>
           </div>
