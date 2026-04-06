@@ -1815,63 +1815,68 @@ const AdminDashboard = ({ onLogout }) => {
         </div>
       )}
 
-      {/* --- AUTOMATIC PRINT RECEIPT SECTION (Only visible during print) --- */}
+      {/* --- AUTOMATIC PRINT RECEIPT SECTION (Professional 80mm Redesign) --- */}
       {printingOrder && (
         <div className="receipt-print-area">
           <div className="receipt-header">
-            <h1 className="cafe-name">Yb's Cafe</h1>
-            <p className="cafe-sub">Marunji Road, Hinjawadi</p>
-            <div className="receipt-meta">
-              <span style={{ fontWeight: '900' }}>TOKEN NO: {printingOrder.id.toString()}</span>
-              <span>Date: {printingOrder.timestamp}</span>
+            <h1 style={{ fontSize: '28px', fontWeight: '900', margin: '0 0 4px 0', textAlign: 'center' }}>Yb's Cafe</h1>
+            <p style={{ fontSize: '15px', fontWeight: '700', margin: '0 0 10px 0', textAlign: 'center' }}>Marunji Road, Hinjawadi</p>
+            
+            <div style={{ textAlign: 'left', marginTop: '15px', borderTop: '1px dashed #000', paddingTop: '10px' }}>
+              <div style={{ fontSize: '18px', fontWeight: '900' }}>TOKEN NO: {printingOrder.id.toString()}</div>
+              <div style={{ fontSize: '14px', fontWeight: '700', marginTop: '4px' }}>Date: {printingOrder.timestamp}</div>
             </div>
           </div>
 
-          <table className="receipt-table">
+          <div className="receipt-divider" style={{ borderTop: '1px dashed #000', margin: '10px 0' }}></div>
+
+          <table className="receipt-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr>
-                <th style={{textAlign: 'left'}}>ITEM</th>
-                <th style={{textAlign: 'center'}}>QTY</th>
-                <th style={{textAlign: 'right'}}>AMT</th>
+              <tr style={{ borderBottom: '1px dashed #000' }}>
+                <th className="it-name" style={{ textAlign: 'left', padding: '5px 0' }}>ITEM</th>
+                <th className="it-qty" style={{ textAlign: 'center' }}>QTY</th>
+                <th className="it-price" style={{ textAlign: 'right' }}>AMT (Rs)</th>
               </tr>
             </thead>
             <tbody>
               {printingOrder.items.map((item, idx) => (
                 <tr key={idx}>
-                  <td className="it-name">{item.name}</td>
-                  <td className="it-qty" style={{textAlign: 'center'}}>{item.qty}</td>
-                  <td className="it-price" style={{textAlign: 'right'}}>₹{item.price * item.qty}</td>
+                  <td className="it-name" style={{ padding: '8px 0', fontWeight: '900' }}>{item.name}</td>
+                  <td className="it-qty" style={{ textAlign: 'center', fontWeight: '900' }}>{item.qty}</td>
+                  <td className="it-price" style={{ textAlign: 'right', fontWeight: '900' }}>{item.price * item.qty}</td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          <div className="receipt-divider"></div>
+          <div className="receipt-divider" style={{ borderTop: '1px dashed #000', margin: '10px 0' }}></div>
 
-          <div className="receipt-totals">
-            <div className="tot-row">
+          <div className="receipt-totals" style={{ marginTop: '5px' }}>
+            <div className="tot-row" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: '900' }}>
               <span>Subtotal:</span>
-              <span>₹{printingOrder.subtotal.toLocaleString('en-IN')}</span>
+              <span>Rs.{printingOrder.subtotal.toLocaleString('en-IN')}</span>
             </div>
             {printingOrder.discount > 0 && (
-              <div className="tot-row disco">
+              <div className="tot-row disco" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '16px', fontStyle: 'italic', border: '1px dashed #000', padding: '2px 5px', margin: '5px 0' }}>
                 <span>Discount:</span>
-                <span>- ₹{printingOrder.discount.toLocaleString('en-IN')}</span>
+                <span>- Rs.{printingOrder.discount.toLocaleString('en-IN')}</span>
               </div>
             )}
-            <div className="tot-row grand">
+            <div className="tot-row grand" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '24px', fontWeight: '900', borderTop: '1px solid #000', borderBottom: '1px solid #000', padding: '8px 0', marginTop: '10px' }}>
               <span>GRAND TOTAL:</span>
-              <span>₹{printingOrder.total.toLocaleString('en-IN')}</span>
+              <span>Rs.{printingOrder.total.toLocaleString('en-IN')}</span>
             </div>
-            <div className="receipt-pmode">
+            <div className="receipt-pmode" style={{ textAlign: 'right', marginTop: '8px', fontSize: '14px', fontWeight: '900' }}>
               Mode: {printingOrder.payment_mode}
             </div>
           </div>
 
-          <div className="receipt-footer">
-            <p className="visit-msg">!! Thank you, Visit Again !!</p>
-            <p className="powered-by">System by VB Designs</p>
+          <div className="receipt-footer" style={{ textAlign: 'center', marginTop: '30px', borderTop: '1px dashed #000', paddingTop: '15px' }}>
+            <p style={{ fontSize: '20px', fontWeight: '900', margin: '0 0 5px 0' }}>!! THANK YOU, VISIT AGAIN !!</p>
+            <p style={{ fontSize: '12px', fontWeight: '700', color: '#000', margin: 0 }}>System by VB Designs</p>
           </div>
+          
+          <div style={{ height: '80px' }}></div> {/* Extra space for easier cutting */}
         </div>
       )}
       {/* Section Security Modal */}

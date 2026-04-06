@@ -95,33 +95,32 @@ body {
 
   .receipt-header {
     text-align: center;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #000;
-    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed #000;
+    padding-bottom: 8px;
   }
 
   .receipt-header h1 {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 900;
-    letter-spacing: -0.5px;
     margin: 0;
     text-transform: uppercase;
   }
 
   .receipt-header p {
     margin: 2px 0;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     color: #000;
   }
 
   .receipt-meta {
-    margin-top: 8px;
+    margin-top: 6px;
     font-size: 14px;
     display: flex;
     flex-direction: column;
     gap: 1px;
-    font-weight: 700;
+    font-weight: 900;
     text-align: left;
   }
 
@@ -137,6 +136,7 @@ body {
     padding: 6px 0;
     font-size: 16px;
     font-weight: 900;
+    text-align: left;
   }
 
   .receipt-table td {
@@ -147,22 +147,24 @@ body {
   }
 
   .it-name {
-    width: 55%;
+    width: 70%;
     text-transform: uppercase;
     word-wrap: break-word;
   }
 
   .it-qty {
-    width: 15%;
+    width: 10%;
+    text-align: center;
   }
 
   .it-price {
-    width: 30%;
+    width: 20%;
+    text-align: right;
   }
 
   .receipt-divider {
-    border-top: 2px dashed #000;
-    margin: 12px 0;
+    border-top: 1px dashed #000;
+    margin: 8px 0;
   }
 
   .receipt-totals {
@@ -176,17 +178,17 @@ body {
     display: flex;
     justify-content: space-between;
     font-weight: 900;
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .tot-row.grand {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 900;
-    margin-top: 6px;
+    margin-top: 4px;
     border-top: 1px solid #000;
-    padding-top: 6px;
+    padding-top: 4px;
     border-bottom: 1px solid #000;
-    padding-bottom: 6px;
+    padding-bottom: 4px;
   }
 
   .tot-row.disco {
@@ -206,23 +208,22 @@ body {
 
   .receipt-footer {
     text-align: center;
-    margin-top: 25px;
-    padding-top: 15px;
-    border-top: 2px dashed #000;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px dashed #000;
   }
 
   .visit-msg {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 900;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     text-transform: uppercase;
   }
 
   .powered-by {
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 900;
     color: #000;
-    letter-spacing: 0.5px;
   }
 }
 
