@@ -83,31 +83,32 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    width: 72mm; /* Professional printable width to avoid wrapping */
-    padding: 0;
-    margin: 0;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    color: #000;
-    background: #fff;
-    line-height: 1.2;
-    box-sizing: border-box;
+    width: 72mm !important;
+    margin: 0 !important;
+    padding: 0 2mm !important; /* Small side padding for safety */
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 18px !important;
+    color: #000 !important;
+    background: #fff !important;
+    line-height: 1.3 !important;
+    box-sizing: border-box !important;
   }
 
   .receipt-title {
     text-align: center;
-    font-size: 24px;
-    font-weight: 900;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    border-bottom: 2px solid #000;
-    padding-bottom: 5px;
+    font-size: 32px !important;
+    font-weight: 900 !important;
+    margin-bottom: 8px !important;
+    text-transform: uppercase !important;
+    border-bottom: 3px solid #000 !important;
+    padding-bottom: 5px !important;
   }
 
   .receipt-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 4px;
+    margin-bottom: 6px !important;
+    font-size: 18px !important;
   }
 
   .receipt-label {
@@ -139,42 +140,21 @@ body {
   }
 
   .receipt-table {
-    width: 100%;
-    margin: 15px 0;
-    border-collapse: collapse;
-    font-family: 'Courier New', Courier, monospace;
+    width: 72mm !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
   }
 
-  .receipt-table th {
-    border-bottom: 1px dashed #000;
-    padding: 6px 0;
-    font-size: 16px;
-    font-weight: 900;
-    text-align: left;
+  .receipt-table th, .receipt-table td {
+    padding: 4px 0 !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    word-break: break-all !important;
   }
 
-  .receipt-table td {
-    padding: 4px 0;
-    font-size: 16px;
-    font-weight: 900;
-    vertical-align: top;
-  }
-
-  .it-name {
-    width: 70%;
-    text-transform: uppercase;
-    word-wrap: break-word;
-  }
-
-  .it-qty {
-    width: 10%;
-    text-align: center;
-  }
-
-  .it-price {
-    width: 20%;
-    text-align: right;
-  }
+  .it-name { width: 42mm !important; text-align: left !important; }
+  .it-qty { width: 10mm !important; text-align: center !important; }
+  .it-price { width: 20mm !important; text-align: right !important; }
 
   .receipt-divider {
     border-top: 1px dashed #000;
@@ -196,13 +176,8 @@ body {
   }
 
   .tot-row.grand {
-    font-size: 22px;
-    font-weight: 900;
-    margin-top: 4px;
-    border-top: 1px solid #000;
-    padding-top: 4px;
-    border-bottom: 1px solid #000;
-    padding-bottom: 4px;
+    font-size: 26px !important;
+    font-weight: 900 !important;
   }
 
   .tot-row.disco {
@@ -228,10 +203,10 @@ body {
   }
 
   .thanks-msg {
-    font-size: 24px;
-    font-weight: 900;
-    margin-bottom: 5px;
-    text-transform: uppercase;
+    font-size: 32px !important;
+    font-weight: 900 !important;
+    margin-bottom: 8px !important;
+    text-transform: uppercase !important;
   }
 }
 

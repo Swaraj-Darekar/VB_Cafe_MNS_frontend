@@ -167,8 +167,8 @@ const AdminDashboard = ({ onLogout }) => {
     setTimeout(() => {
       window.print();
       // Cleanup printable state
-      setTimeout(() => setPrintingOrder(null), 1000);
-    }, 500);
+      setTimeout(() => setPrintingOrder(null), 2000);
+    }, 1500);
   };
 
   // Fetch Menu Items
@@ -604,8 +604,8 @@ const AdminDashboard = ({ onLogout }) => {
         setTimeout(() => {
           window.print();
           // Clear printing state after a delay to reset the DOM
-          setTimeout(() => setPrintingOrder(null), 1000);
-        }, 500);
+          setTimeout(() => setPrintingOrder(null), 2000);
+        }, 1500);
       } else {
         alert('Failed to save order');
       }
@@ -1815,7 +1815,7 @@ const AdminDashboard = ({ onLogout }) => {
         </div>
       )}
 
-      {/* --- AUTOMATIC PRINT RECEIPT SECTION (Realistic Refactored Layout) --- */}
+      {/* --- AUTOMATIC PRINT RECEIPT SECTION (Bulletproof Real-World POS) --- */}
       {printingOrder && (
         <div className="receipt-print-area">
           <div className="receipt-title">CASH RECEIPT</div>
@@ -1839,19 +1839,25 @@ const AdminDashboard = ({ onLogout }) => {
 
           <div className="receipt-divider-thick"></div>
           
-          <div className="receipt-row" style={{ fontWeight: '900', marginBottom: '8px' }}>
-            <span>Description</span>
-            <span>Price</span>
-          </div>
-
-          <div className="receipt-divider-thin"></div>
-
-          {printingOrder.items.map((item, idx) => (
-            <div key={idx} className="receipt-row" style={{ marginVertical: '2px' }}>
-              <span style={{ flex: 1, textTransform: 'uppercase' }}>{item.qty} x {item.name}</span>
-              <span className="receipt-value">Rs.{item.price * item.qty}</span>
-            </div>
-          ))}
+          {/* Using a standard table for bulletproof column alignment */}
+          <table className="receipt-table">
+            <thead>
+              <tr style={{ borderBottom: '1px dotted #000' }}>
+                <th className="it-name">DESCRIPTION</th>
+                <th className="it-qty">QTY</th>
+                <th className="it-price">PRICE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {printingOrder.items.map((item, idx) => (
+                <tr key={idx}>
+                  <td className="it-name" style={{ textTransform: 'uppercase' }}>{item.name}</td>
+                  <td className="it-qty">{item.qty}</td>
+                  <td className="it-price">Rs.{item.price * item.qty}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
           <div className="receipt-divider-thick"></div>
 
@@ -1868,15 +1874,15 @@ const AdminDashboard = ({ onLogout }) => {
           
           <div className="receipt-divider-thick"></div>
 
-          <div className="receipt-row" style={{ fontSize: '18px', fontWeight: '900' }}>
-            <span>Total</span>
+          <div className="receipt-row tot-row grand">
+            <span>TOTAL</span>
             <span>Rs.{printingOrder.total.toLocaleString('en-IN')}</span>
           </div>
 
           <div className="receipt-footer">
             <div className="thanks-msg">THANK YOU!</div>
             <div style={{ fontSize: '10px' }}>System by VB Designs</div>
-            <div style={{ height: '60px', marginTop: '10px' }}></div>
+            <div style={{ height: '80px', marginTop: '10px' }}></div>
           </div>
         </div>
       )}
