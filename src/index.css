@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #0b090a;
+  --panel-bg: rgba(20, 16, 17, 0.45);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #ffffff;
+  --text-secondary: #a39598;
+  --accent-color: #d4a373;
+  --accent-hover: #faedcd;
+  --input-bg: rgba(0, 0, 0, 0.3);
+  --input-border: rgba(255, 255, 255, 0.12);
+  --input-focus: rgba(212, 163, 115, 0.7);
+  --error-color: #e56b6b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-color);
+  background-image: url('/background.png'); /* From public dir */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism styling */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+}
+
+/* Keyframes for subtle entrance */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- Thermal Printer Receipt Styling --- */
+@media print {
+  /* Hide all dashboard/ui elements */
+  body * {
+    visibility: hidden;
+  }
+  
+  @page {
+    margin: 0;
+    size: auto;
+  }
+  
+  /* Show only the receipt */
+  .receipt-print-area, .receipt-print-area * {
+    visibility: visible;
+  }
+
+  .receipt-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 300px; /* Standard 80mm printer width preview */
+    padding: 15px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #000;
+    background: #fff;
+    line-height: 1.4;
+  }
+
+  .receipt-header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 12px;
+  }
+
+  .receipt-header h1 {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .receipt-header p {
+    margin: 4px 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .receipt-meta {
+    margin-top: 12px;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+  }
+
+  .receipt-table {
+    width: 100%;
+    margin: 15px 0;
+    border-collapse: collapse;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .receipt-table th {
+    border-bottom: 2px dashed #000;
+    padding: 8px 0;
+    font-size: 12px;
+    font-weight: 900;
+    text-align: left;
+  }
+
+  .receipt-table td {
+    padding: 6px 0;
+    font-size: 12px;
+    font-weight: 700;
+    vertical-align: top;
+    word-break: break-word;
+  }
+
+  .it-name {
+    width: 60%;
+    text-transform: uppercase;
+  }
+
+  .receipt-divider {
+    border-top: 2px dashed #000;
+    margin: 12px 0;
+  }
+
+  .receipt-totals {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .tot-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .tot-row.grand {
+    font-size: 18px;
+    font-weight: 900;
+    margin-top: 8px;
+    border-top: 2px solid #000;
+    padding-top: 8px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 8px;
+  }
+
+  .tot-row.disco {
+    font-style: italic;
+    border: 1px dashed #000;
+    padding: 2px 4px;
+    margin: 2px 0;
+  }
+
+  .receipt-pmode {
+    margin-top: 10px;
+    font-size: 11px;
+    text-align: right;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .receipt-footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 2px dashed #000;
+  }
+
+  .visit-msg {
+    font-size: 14px;
+    font-weight: 900;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .powered-by {
+    font-size: 9px;
+    font-weight: 500;
+    color: #444;
+    letter-spacing: 1px;
+  }
+}
+
+/* Hidden container in normal view */
+.receipt-print-area {
+  display: none;
+}
+@media print {
+  .receipt-print-area {
+    display: block;
+  }
+}

@@ -1,0 +1,316 @@
+/* Premium Expenses Tab Styles */
+
+.expenses-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.expense-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    border: 1px solid #f0f0f5;
+}
+
+.expense-card-title {
+    font-size: 1.2rem;
+    color: #1e1e2d;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.expense-form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.expense-form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #5e6278;
+}
+
+.expense-input {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #eef0f5;
+    background-color: #fcfcfd;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.expense-input:focus {
+    border-color: #6366f1;
+    background-color: #fff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.expense-submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: #1a1e35;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.expense-submit-btn:hover:not(:disabled) {
+    background-color: #2b3052;
+}
+
+.dot.cash {
+  background-color: #10b981;
+}
+
+/* Settlement Expense Detail Modal */
+.expense-detail-modal {
+    max-width: 650px;
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    padding: 2.5rem;
+    position: relative;
+}
+
+.expense-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.expense-detail-titles h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1e1e2d;
+    margin-bottom: 0.2rem;
+}
+
+.expense-detail-titles p {
+    color: #a1a5b7;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.close-expense-modal {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f1f1fc;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5e6278;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.close-expense-modal:hover {
+    background: #eef2ff;
+    color: #6366f1;
+}
+
+.expense-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+.expense-detail-table th {
+    text-align: left;
+    padding: 1rem 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #a1a5b7;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.expense-detail-table td {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid #f8f9fa;
+    font-size: 0.95rem;
+}
+
+.exp-dt {
+    color: #a1a5b7;
+    font-weight: 500;
+}
+
+.exp-desc {
+    color: #1e1e2d;
+    font-weight: 700;
+}
+
+.exp-amt {
+    text-align: right;
+    color: #ef4444;
+    font-weight: 700;
+}
+
+.expense-detail-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 2px solid #f8f9fa;
+}
+
+.total-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #5e6278;
+}
+
+.total-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1e1e2d;
+}
+
+.expense-submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Table Styles */
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.expense-table th {
+    text-align: left;
+    padding: 1rem;
+    font-size: 0.8rem;
+    color: #a1a5b7;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.expense-table td {
+    padding: 1.2rem 1rem;
+    font-size: 0.95rem;
+    color: #1e1e2d;
+    font-weight: 500;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.expense-table tr:last-child td {
+    border-bottom: none;
+}
+
+.exp-amount {
+    font-weight: 700;
+}
+
+.exp-date {
+    color: #5e6278;
+}
+
+.exp-delete-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background-color: #f1f1fc;
+    color: #5e6278;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.exp-delete-btn:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+/* Sidebar Lock Styling */
+.expense-list-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.expense-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.expense-list-container::-webkit-scrollbar-track {
+    background: #f0f0f5; 
+    border-radius: 4px;
+}
+
+.expense-list-container::-webkit-scrollbar-thumb {
+    background: #cdd0d5; 
+    border-radius: 4px;
+}
+
+.expense-list-container::-webkit-scrollbar-thumb:hover {
+    background: #a1a5b7; 
+}
+
+.lock-icon {
+    margin-left: auto;
+    color: #a1a5b7;
+    opacity: 0.8;
+}
+
+/* Delete Confirmation Modal */
+.confirm-modal-content {
+    max-width: 400px;
+    text-align: center;
+    padding: 2.5rem;
+}
+
+.confirm-icon-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #fee2e2;
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.confirm-modal-btns {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.confirm-btn-cancel {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #eef0f5;
+    background: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.confirm-btn-delete {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 8px;
+    background-color: #ef4444;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}

@@ -1,0 +1,165 @@
+/* --- Dual-Theme Login Styling --- */
+
+/* Base Styles */
+.login-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.4s ease;
+  padding: 1.5rem;
+}
+
+/* 1. Standard Admin Login (Light & Professional) */
+.login-page-admin {
+  background: linear-gradient(135deg, #f8faff 0%, #e0e7ff 100%);
+}
+
+.login-page-admin .login-container {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  width: 100%;
+  max-width: 420px;
+  padding: 3rem 2.5rem;
+}
+
+.login-page-admin .login-logo {
+  background: #f1f5ff;
+  color: #6366f1;
+  border: 1px solid #e0e7ff;
+}
+
+.login-page-admin .login-title {
+  color: #1e1e2d;
+  font-weight: 800;
+}
+
+.login-page-admin .login-subtitle {
+  color: #5e6278;
+}
+
+.login-page-admin .form-input {
+  background: #fcfcfe;
+  border: 1px solid #eef2ff;
+  color: #1e1e2d;
+}
+
+.login-page-admin .form-input:focus {
+  border-color: #6366f1;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.login-page-admin .login-btn {
+  background: #6366f1;
+  color: #fff;
+}
+
+.login-page-admin .login-btn:hover {
+  background: #4f46e5;
+}
+
+/* 2. Super Admin Login (Dark & Premium) */
+.login-page-super {
+  background: linear-gradient(135deg, #09090b 0%, #1a1a2e 100%);
+}
+
+.login-page-super .login-container {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 440px;
+  padding: 3rem 2.5rem;
+}
+
+.login-page-super .login-logo {
+  background: rgba(139, 92, 246, 0.1);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+.login-page-super .login-title {
+  color: #f8fafc;
+  font-weight: 800;
+  background: linear-gradient(to right, #fff, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-page-super .login-subtitle {
+  color: #94a3b8;
+}
+
+.login-page-super .form-label {
+  color: #cbd5e1;
+}
+
+.login-page-super .form-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+}
+
+.login-page-super .form-input:focus {
+  border-color: #8b5cf6;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+}
+
+.login-page-super .input-icon {
+  color: #64748b;
+}
+
+.login-page-super .login-btn {
+  background: #8b5cf6;
+  color: #fff;
+  box-shadow: 0 10px 20px -10px rgba(139, 92, 246, 0.5);
+}
+
+.login-page-super .login-btn:hover {
+  background: #7c3aed;
+  transform: translateY(-2px);
+}
+
+.login-page-super .remember-me {
+  color: #94a3b8;
+}
+
+/* Shared Components (Already in original CSS but updated here for clarity) */
+.login-header { text-align: center; margin-bottom: 2.5rem; }
+.login-logo { display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 16px; margin-bottom: 1.5rem; }
+.login-title { font-size: 2.2rem; margin-bottom: 0.5rem; letter-spacing: -0.04em; }
+.login-subtitle { font-size: 0.95rem; font-weight: 500; }
+.login-form { display: flex; flex-direction: column; gap: 1.5rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.6rem; }
+.form-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.input-wrapper { position: relative; display: flex; align-items: center; }
+.input-icon { position: absolute; left: 1rem; pointer-events: none; transition: all 0.3s ease; }
+.form-input { width: 100%; border-radius: 12px; padding: 1.1rem 1rem 1.1rem 3.2rem; font-size: 1rem; font-family: inherit; transition: all 0.3s ease; outline: none; }
+.login-btn { border: none; border-radius: 12px; padding: 1.1rem; font-size: 1rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.3s ease; margin-top: 1rem; display: flex; justify-content: center; align-items: center; gap: 0.6rem; }
+
+/* Hidden link styling */
+.hidden-version-link {
+  text-align: center;
+  margin-top: 2.5rem;
+  font-size: 0.7rem;
+  color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.login-page-super .hidden-version-link {
+  color: rgba(255, 255, 255, 0.05);
+}
+
+.hidden-version-link:hover {
+  color: #8b5cf6;
+}

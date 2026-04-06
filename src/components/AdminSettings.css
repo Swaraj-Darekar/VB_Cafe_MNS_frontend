@@ -1,0 +1,150 @@
+/* Admin Settings Section Styles */
+
+.admin-settings-layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.admin-settings-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #f0f0f5;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.admin-settings-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.admin-settings-card-title {
+  font-size: 1.1rem;
+  color: #1e1e2d;
+  font-weight: 600;
+}
+
+.admin-settings-badge {
+  background-color: #f1faff;
+  color: #0ea5e9;
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid #e0f2fe;
+}
+
+.admin-settings-badge.gray {
+  background-color: #f8f9fa;
+  color: #5e6278;
+  border-color: #eef0f5;
+}
+
+.admin-setting-group {
+  margin-bottom: 1.5rem;
+}
+
+.admin-setting-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: #5e6278;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.admin-setting-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #eef0f5;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1e1e2d;
+  outline: none;
+}
+
+.admin-setting-hint {
+  font-size: 0.75rem;
+  color: #a1a5b7;
+  margin-top: 0.5rem;
+}
+
+/* Menu Management Buttons */
+.btn-primary-purple {
+  background-color: #6366f1;
+  color: white;
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.btn-secondary-white {
+  background-color: #ffffff;
+  color: #5e6278;
+  width: 100%;
+  padding: 0.9rem;
+  border: 1px solid #eef0f5;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Commission Toggles */
+.toggle-group {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #eef0f5;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.9rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background-color: white;
+  color: #a1a5b7;
+}
+
+.toggle-btn.active-green {
+  background-color: #10b981;
+  color: white;
+}
+
+.toggle-btn:not(.active-green) {
+  border-left: 1px solid #eef0f5;
+}
+
+.bottom-save-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.save-all-btn {
+  background-color: #1a1e35;
+  color: white;
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}

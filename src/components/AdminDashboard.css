@@ -1,0 +1,338 @@
+.admin-dashboard {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fcfcfc;
+  font-family: 'Inter', 'Outfit', sans-serif;
+  overflow: hidden;
+}
+
+.admin-sidebar {
+  width: 250px;
+  background-color: #ffffff;
+  border-right: 1px solid #f0f0f5;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 0;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.admin-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.5rem 3rem;
+}
+
+.wallet-status-card {
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  color: #0369a1;
+  padding: 1.5rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid #bae6fd;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.admin-logo-icon {
+  background-color: #6366f1;
+  color: white;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.admin-logo-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #1e1e2d;
+}
+
+.admin-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1.5rem;
+  color: #5e6278;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0.2rem 1rem;
+  border-radius: 10px;
+}
+
+.admin-menu-item:hover {
+  background-color: #f8f9fa;
+}
+
+.admin-menu-item.active {
+  background-color: #f4f4fa;
+  color: #6366f1;
+  font-weight: 600;
+  border-left: 4px solid #6366f1;
+  border-radius: 0 10px 10px 0;
+  margin-left: 0;
+  padding-left: 1.5rem;
+}
+
+.admin-menu-item .lock-icon {
+  margin-left: auto;
+  color: #fbbf24;
+}
+
+.admin-sidebar-footer {
+  margin-top: auto;
+  padding: 1.5rem;
+}
+
+.admin-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #e56b6b;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 0.95rem;
+  padding: 0.5rem;
+}
+
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.admin-topbar {
+  height: 80px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  border-bottom: 1px solid #f0f0f5;
+}
+
+.admin-topbar-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e1e2d;
+}
+
+.admin-dashboard-body {
+  padding: 2.5rem;
+}
+
+.wallet-card-admin {
+  background: #f1f8ff;
+  border: 1px solid #e0f0ff;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 250px;
+}
+
+.wallet-card-admin .label {
+  color: #0c4a6e;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.wallet-card-admin .value {
+  color: #0369a1;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* --- Dashboard POS Layout --- */
+.dashboard-topbar-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eef0f5;
+}
+
+.dashboard-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.top-btn {
+  height: 50px;
+  padding: 0 1.5rem;
+  margin: 0; 
+}
+
+.top-card {
+  width: auto;
+  padding: 0.5rem 1.5rem;
+  border-radius: 12px;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.top-card .value {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.dashboard-controls-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.search-bar-wrapper {
+  position: relative;
+  max-width: 400px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a1a5b7;
+}
+
+.dashboard-search-input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.8rem;
+  border: 1px solid #eef0f5;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1e1e2d;
+  background-color: #fff;
+  transition: all 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.dashboard-search-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.category-filter-tabs {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  background-color: #fff;
+  border: 1px solid #eef0f5;
+  color: #5e6278;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-tab:hover {
+  background-color: #f8f9fa;
+  color: #1e1e2d;
+}
+
+.filter-tab.active {
+  background-color: #1e1e2d;
+  border-color: #1e1e2d;
+  color: #fff;
+}
+
+.pos-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+.empty-state-msg {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: #a1a5b7;
+  font-size: 1.1rem;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px dashed #eef0f5;
+}
+
+.menu-item-card {
+  background-color: #ffffff;
+  border: 1px solid #f0f0f5;
+  border-radius: 12px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 110px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.menu-item-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: #6366f1;
+}
+
+.pos-item-card {
+  background: #fff;
+  border: 1px solid #eef0f5;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: default; 
+}
+
+.pos-item-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+  border-color: #dddfe5;
+}
+
+.pos-item-cat {
+  font-size: 0.75rem;
+  color: #a1a5b7;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pos-item-name {
+  font-weight: 700;
+  color: #1e1e2d;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.pos-item-price {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: auto;
+}
