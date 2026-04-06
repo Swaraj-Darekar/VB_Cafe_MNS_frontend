@@ -1819,8 +1819,8 @@ const AdminDashboard = ({ onLogout }) => {
       {printingOrder && (
         <div className="receipt-print-area">
           <div className="receipt-header">
-            <h1 className="cafe-name">VB TERRESSE CAFE</h1>
-            <p className="cafe-sub">Pune, Maharashtra</p>
+            <h1 className="cafe-name">VB TERRACE</h1>
+            <p className="cafe-sub">Marunji Road, Hinjawadi</p>
             <div className="receipt-meta">
               <span style={{ fontSize: '14px', fontWeight: '900' }}>TOKEN NO: {printingOrder.id.toString()}</span>
               <span>Date: {printingOrder.timestamp}</span>
