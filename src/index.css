@@ -83,35 +83,49 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    width: 80mm;
-    padding: 2mm 4mm;
+    width: 72mm; /* Professional printable width to avoid wrapping */
+    padding: 0;
+    margin: 0;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 16px;
+    font-size: 14px;
     color: #000;
     background: #fff;
     line-height: 1.2;
     box-sizing: border-box;
   }
 
-  .receipt-header {
+  .receipt-title {
     text-align: center;
-    margin-bottom: 12px;
-    border-bottom: 1px dashed #000;
-    padding-bottom: 8px;
-  }
-
-  .receipt-header h1 {
     font-size: 24px;
     font-weight: 900;
-    margin: 0;
+    margin-bottom: 5px;
     text-transform: uppercase;
+    border-bottom: 2px solid #000;
+    padding-bottom: 5px;
   }
 
-  .receipt-header p {
-    margin: 2px 0;
-    font-size: 15px;
-    font-weight: 700;
-    color: #000;
+  .receipt-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .receipt-label {
+    font-weight: 900;
+  }
+
+  .receipt-value {
+    text-align: right;
+  }
+
+  .receipt-divider-thick {
+    border-top: 2px solid #000;
+    margin: 8px 0;
+  }
+
+  .receipt-divider-thin {
+    border-top: 1px dotted #000;
+    margin: 6px 0;
   }
 
   .receipt-meta {
@@ -210,20 +224,14 @@ body {
     text-align: center;
     margin-top: 20px;
     padding-top: 10px;
-    border-top: 1px dashed #000;
+    border-top: 2px solid #000;
   }
 
-  .visit-msg {
-    font-size: 20px;
+  .thanks-msg {
+    font-size: 24px;
     font-weight: 900;
-    margin-bottom: 2px;
+    margin-bottom: 5px;
     text-transform: uppercase;
-  }
-
-  .powered-by {
-    font-size: 13px;
-    font-weight: 900;
-    color: #000;
   }
 }
 

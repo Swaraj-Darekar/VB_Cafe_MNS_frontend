@@ -1815,68 +1815,69 @@ const AdminDashboard = ({ onLogout }) => {
         </div>
       )}
 
-      {/* --- AUTOMATIC PRINT RECEIPT SECTION (Professional 80mm Redesign) --- */}
+      {/* --- AUTOMATIC PRINT RECEIPT SECTION (Realistic Refactored Layout) --- */}
       {printingOrder && (
         <div className="receipt-print-area">
-          <div className="receipt-header">
-            <h1 style={{ fontSize: '28px', fontWeight: '900', margin: '0 0 4px 0', textAlign: 'center' }}>Yb's Cafe</h1>
-            <p style={{ fontSize: '15px', fontWeight: '700', margin: '0 0 10px 0', textAlign: 'center' }}>Marunji Road, Hinjawadi</p>
-            
-            <div style={{ textAlign: 'left', marginTop: '15px', borderTop: '1px dashed #000', paddingTop: '10px' }}>
-              <div style={{ fontSize: '18px', fontWeight: '900' }}>TOKEN NO: {printingOrder.id.toString()}</div>
-              <div style={{ fontSize: '14px', fontWeight: '700', marginTop: '4px' }}>Date: {printingOrder.timestamp}</div>
-            </div>
-          </div>
-
-          <div className="receipt-divider" style={{ borderTop: '1px dashed #000', margin: '10px 0' }}></div>
-
-          <table className="receipt-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ borderBottom: '1px dashed #000' }}>
-                <th className="it-name" style={{ textAlign: 'left', padding: '5px 0' }}>ITEM</th>
-                <th className="it-qty" style={{ textAlign: 'center' }}>QTY</th>
-                <th className="it-price" style={{ textAlign: 'right' }}>AMT (Rs)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {printingOrder.items.map((item, idx) => (
-                <tr key={idx}>
-                  <td className="it-name" style={{ padding: '8px 0', fontWeight: '900' }}>{item.name}</td>
-                  <td className="it-qty" style={{ textAlign: 'center', fontWeight: '900' }}>{item.qty}</td>
-                  <td className="it-price" style={{ textAlign: 'right', fontWeight: '900' }}>{item.price * item.qty}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className="receipt-divider" style={{ borderTop: '1px dashed #000', margin: '10px 0' }}></div>
-
-          <div className="receipt-totals" style={{ marginTop: '5px' }}>
-            <div className="tot-row" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: '900' }}>
-              <span>Subtotal:</span>
-              <span>Rs.{printingOrder.subtotal.toLocaleString('en-IN')}</span>
-            </div>
-            {printingOrder.discount > 0 && (
-              <div className="tot-row disco" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '16px', fontStyle: 'italic', border: '1px dashed #000', padding: '2px 5px', margin: '5px 0' }}>
-                <span>Discount:</span>
-                <span>- Rs.{printingOrder.discount.toLocaleString('en-IN')}</span>
-              </div>
-            )}
-            <div className="tot-row grand" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '24px', fontWeight: '900', borderTop: '1px solid #000', borderBottom: '1px solid #000', padding: '8px 0', marginTop: '10px' }}>
-              <span>GRAND TOTAL:</span>
-              <span>Rs.{printingOrder.total.toLocaleString('en-IN')}</span>
-            </div>
-            <div className="receipt-pmode" style={{ textAlign: 'right', marginTop: '8px', fontSize: '14px', fontWeight: '900' }}>
-              Mode: {printingOrder.payment_mode}
-            </div>
-          </div>
-
-          <div className="receipt-footer" style={{ textAlign: 'center', marginTop: '30px', borderTop: '1px dashed #000', paddingTop: '15px' }}>
-            <p style={{ fontSize: '20px', fontWeight: '900', margin: '0 0 5px 0' }}>!! THANK YOU, VISIT AGAIN !!</p>
-            <p style={{ fontSize: '12px', fontWeight: '700', color: '#000', margin: 0 }}>System by VB Designs</p>
-          </div>
+          <div className="receipt-title">CASH RECEIPT</div>
           
-          <div style={{ height: '80px' }}></div> {/* Extra space for easier cutting */}
+          <div className="receipt-row">
+            <span className="receipt-label">Shop Name:</span>
+            <span className="receipt-value">Yb's Cafe</span>
+          </div>
+          <div className="receipt-row">
+            <span className="receipt-label">Shop Address:</span>
+            <span className="receipt-value">Hinjawadi, Pune</span>
+          </div>
+          <div className="receipt-row">
+            <span className="receipt-label">Date:</span>
+            <span className="receipt-value">{new Date().toLocaleDateString('en-GB')}</span>
+          </div>
+          <div className="receipt-row">
+            <span className="receipt-label">Token No:</span>
+            <span className="receipt-value">{printingOrder.id.toString()}</span>
+          </div>
+
+          <div className="receipt-divider-thick"></div>
+          
+          <div className="receipt-row" style={{ fontWeight: '900', marginBottom: '8px' }}>
+            <span>Description</span>
+            <span>Price</span>
+          </div>
+
+          <div className="receipt-divider-thin"></div>
+
+          {printingOrder.items.map((item, idx) => (
+            <div key={idx} className="receipt-row" style={{ marginVertical: '2px' }}>
+              <span style={{ flex: 1, textTransform: 'uppercase' }}>{item.qty} x {item.name}</span>
+              <span className="receipt-value">Rs.{item.price * item.qty}</span>
+            </div>
+          ))}
+
+          <div className="receipt-divider-thick"></div>
+
+          <div className="receipt-row">
+            <span className="receipt-label">Subtotal</span>
+            <span className="receipt-value">Rs.{printingOrder.subtotal.toLocaleString('en-IN')}</span>
+          </div>
+          {printingOrder.discount > 0 && (
+            <div className="receipt-row">
+              <span className="receipt-label">Discount</span>
+              <span className="receipt-value">- Rs.{printingOrder.discount.toLocaleString('en-IN')}</span>
+            </div>
+          )}
+          
+          <div className="receipt-divider-thick"></div>
+
+          <div className="receipt-row" style={{ fontSize: '18px', fontWeight: '900' }}>
+            <span>Total</span>
+            <span>Rs.{printingOrder.total.toLocaleString('en-IN')}</span>
+          </div>
+
+          <div className="receipt-footer">
+            <div className="thanks-msg">THANK YOU!</div>
+            <div style={{ fontSize: '10px' }}>System by VB Designs</div>
+            <div style={{ height: '60px', marginTop: '10px' }}></div>
+          </div>
         </div>
       )}
       {/* Section Security Modal */}
