@@ -65,9 +65,16 @@ const SuperAdminDashboard = ({ onLogout }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: parseFloat(amount) })
       });
+      
+      const data = await res.json();
+      
       if (res.ok) {
-        alert(`Successfully added ₹${amount} to wallet!`);
-        fetchInitialData();
+        // Optimistically update the wallet balance from the response
+        setWalletBalance(data.new_balance);
+        // We don't necessarily need the alert if we want it to feel "instant",
+        // but the user might want confirmation. Let's use a non-blocking toast 
+        // if possible, but for now just skip fetchInitialData() which is heavy.
+        console.log(`Successfully added ₹${amount} to wallet!`);
       }
     } catch (error) {
       alert("Failed to add money");
