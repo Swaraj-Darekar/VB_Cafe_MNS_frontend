@@ -40,11 +40,14 @@ const Login = ({ onSuperAdminLogin, onAdminLogin, isSuperAdminView }) => {
           <div className="login-logo">
             <Coffee size={32} strokeWidth={2.5} />
           </div>
+          <div className="login-badge">
+            {isSuperAdminView ? 'High Security' : 'System Administration'}
+          </div>
           <h1 className="login-title">
-            {isSuperAdminView ? 'Super Admin Portal' : 'VB Cafe Admin'}
+            {isSuperAdminView ? 'Super Admin' : 'Welcome Back'}
           </h1>
           <p className="login-subtitle">
-            {isSuperAdminView ? 'Enterprise Management Console' : 'Secure Point of Sale Access'}
+            {isSuperAdminView ? 'Enterprise Management Console' : 'Please sign in to your admin account'}
           </p>
         </div>
 
