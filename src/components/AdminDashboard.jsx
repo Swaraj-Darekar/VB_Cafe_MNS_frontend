@@ -5,7 +5,7 @@ import {
   User, Calendar, ChevronDown, Coffee, Coins, WalletCards,
   CalendarDays, TrendingDown, TrendingUp, Trash2, Eye, X,
   Plus, Minus, ShoppingCart, Search, Pencil, CreditCard, Info, Printer,
-  AlertTriangle
+  AlertTriangle, Menu
 } from 'lucide-react';
 import './AdminDashboard.css';
 import './History.css';
@@ -17,6 +17,7 @@ import { API_URL } from '../config';
 
 const AdminDashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   
   // Modals Data & State
   const [isAddItemOpen, setIsAddItemOpen] = useState(false);
@@ -666,89 +667,100 @@ const AdminDashboard = ({ onLogout }) => {
 
     return (
       <div className="admin-dashboard-body">
-        {/* Wallet Threshold Alerts */}
-        {walletBalance !== null && walletBalance < 15 && walletBalance >= 10 && (
-          <div style={{ 
-            backgroundColor: '#fff7ed', border: '1px solid #fdba74', color: '#9a3412',
-            padding: '12px 16px', borderRadius: '12px', marginBottom: '1.5rem',
-            display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', fontWeight: 600
-          }}>
-            <AlertTriangle size={18} color="#f97316" />
-            <span>Low Balance Alert: Your wallet is below ₹15. Please recharge soon to avoid interruption.</span>
-          </div>
-        )}
-
-        {walletBalance !== null && walletBalance < 10 && (
-          <div style={{ 
-            backgroundColor: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b',
-            padding: '12px 16px', borderRadius: '12px', marginBottom: '1.5rem',
-            display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', fontWeight: 600
-          }}>
-            <Lock size={18} color="#ef4444" />
-            <span>Action Required: Wallet balance below ₹10. New orders are temporarily restricted.</span>
-          </div>
-        )}
-
-        {/* Header containing Wallet & Action */}
-        <div className="dashboard-topbar-actions">
-          <div className="dashboard-actions-left">
-            <h2 style={{margin: 0, color: '#1e1e2d', fontSize: '1.2rem', fontWeight: 700}}>Menu POS</h2>
-            <p style={{margin: 0, color: '#a1a5b7', fontSize: '0.85rem'}}>View available inventory</p>
-          </div>
-          <div className="dashboard-actions-right">
-            <button 
-              className={`new-order-btn top-btn ${walletBalance !== null && walletBalance < 10 ? 'blocked' : ''}`} 
-              onClick={() => (walletBalance === null || walletBalance >= 10) && setIsNewOrderOpen(true)}
-              style={{ 
-                opacity: (walletBalance !== null && walletBalance < 10) ? 0.5 : 1, 
-                cursor: (walletBalance !== null && walletBalance < 10) ? 'not-allowed' : 'pointer',
-                backgroundColor: (walletBalance !== null && walletBalance < 10) ? '#a1a5b7' : '#6366f1'
-              }}
-              disabled={walletBalance !== null && walletBalance < 10}
-            >
-              <ShoppingCart size={18} style={{ marginRight: '8px' }} />
-              {walletBalance !== null && walletBalance < 10 ? 'Blocked' : 'New Order'}
-            </button>
-            <div className={`wallet-card-admin top-card ${walletBalance !== null && walletBalance < 10 ? 'low-bal' : ''}`} style={{
-               border: walletBalance !== null && walletBalance < 10 ? '1px solid #ef4444' : '1px solid #eef0f5'
+        <div className="dashboard-sticky-header">
+          {/* Wallet Threshold Alerts */}
+          {walletBalance !== null && walletBalance < 15 && walletBalance >= 10 && (
+            <div style={{ 
+              backgroundColor: '#fff7ed', border: '1px solid #fdba74', color: '#9a3412',
+              padding: '12px 16px', borderRadius: '12px', marginBottom: '1.5rem',
+              display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', fontWeight: 600
             }}>
-              <span className="label">Wallet Balance</span>
-              <span className="value" style={{ color: (walletBalance !== null && walletBalance < 10) ? '#ef4444' : '#0369a1' }}>
-                ₹{(walletBalance || 0).toLocaleString('en-IN', {minimumFractionDigits: 0})}
-              </span>
+              <AlertTriangle size={18} color="#f97316" />
+              <span>Low Balance Alert: Your wallet is below ₹15. Please recharge soon to avoid interruption.</span>
+            </div>
+          )}
+
+          {walletBalance !== null && walletBalance < 10 && (
+            <div style={{ 
+              backgroundColor: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b',
+              padding: '12px 16px', borderRadius: '12px', marginBottom: '1.5rem',
+              display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', fontWeight: 600
+            }}>
+              <Lock size={18} color="#ef4444" />
+              <span>Action Required: Wallet balance below ₹10. New orders are temporarily restricted.</span>
+            </div>
+          )}
+
+          {/* Header containing Wallet & Action */}
+          <div className="dashboard-topbar-actions">
+            <div className="dashboard-actions-left">
+              <h2 style={{margin: 0, color: '#1e1e2d', fontSize: '1.2rem', fontWeight: 700}}>Menu POS</h2>
+              <p style={{margin: 0, color: '#a1a5b7', fontSize: '0.85rem'}}>View available inventory</p>
+            </div>
+            <div className="dashboard-actions-right">
+              <button 
+                className={`new-order-btn top-btn ${walletBalance !== null && walletBalance < 10 ? 'blocked' : ''}`} 
+                onClick={() => (walletBalance === null || walletBalance >= 10) && setIsNewOrderOpen(true)}
+                style={{ 
+                  opacity: (walletBalance !== null && walletBalance < 10) ? 0.5 : 1, 
+                  cursor: (walletBalance !== null && walletBalance < 10) ? 'not-allowed' : 'pointer',
+                  backgroundColor: (walletBalance !== null && walletBalance < 10) ? '#a1a5b7' : '#6366f1'
+                }}
+                disabled={walletBalance !== null && walletBalance < 10}
+              >
+                <ShoppingCart size={18} style={{ marginRight: '8px' }} />
+                {walletBalance !== null && walletBalance < 10 ? 'Blocked' : 'New Order'}
+              </button>
+              <div className={`wallet-card-admin top-card ${walletBalance !== null && walletBalance < 10 ? 'low-bal' : ''}`} style={{
+                 border: walletBalance !== null && walletBalance < 10 ? '1px solid #ef4444' : '1px solid #eef0f5'
+              }}>
+                <span className="label">Wallet Balance</span>
+                <span className="value" style={{ color: (walletBalance !== null && walletBalance < 10) ? '#ef4444' : '#0369a1' }}>
+                  ₹{(walletBalance || 0).toLocaleString('en-IN', {minimumFractionDigits: 0})}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Search & Filter Controls */}
-        <div className="dashboard-controls-row">
-          <div className="search-bar-wrapper">
-            <Search size={18} className="search-icon" />
-            <input 
-              type="text" 
-              placeholder="Search items..." 
-              value={searchTerm} 
-              onChange={(e) => setSearchTerm(e.target.value)} 
-              className="dashboard-search-input"
-            />
-          </div>
-          
-          <div className="category-filter-tabs">
-            <button 
-              className={`filter-tab ${selectedCategory === 'All' ? 'active' : ''}`}
-              onClick={() => setSelectedCategory('All')}
-            >
-              All
-            </button>
-            {categories.map(cat => (
+          {/* Search & Filter Controls */}
+          <div className="dashboard-controls-row">
+            <div className="search-bar-wrapper">
+              <Search size={18} className="search-icon" />
+              <input 
+                type="text" 
+                placeholder="Search items..." 
+                value={searchTerm} 
+                onChange={(e) => setSearchTerm(e.target.value)} 
+                className="dashboard-search-input"
+              />
+              {searchTerm && (
+                <button 
+                  className="clear-search-btn"
+                  onClick={() => setSearchTerm('')}
+                  title="Clear search"
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+            
+            <div className="category-filter-tabs">
               <button 
-                key={cat.id} 
-                className={`filter-tab ${selectedCategory === cat.id ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(cat.id)}
+                className={`filter-tab ${selectedCategory === 'All' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('All')}
               >
-                {cat.name}
+                All
               </button>
-            ))}
+              {categories.map(cat => (
+                <button 
+                  key={cat.id} 
+                  className={`filter-tab ${selectedCategory === cat.id ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(cat.id)}
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -1120,23 +1132,28 @@ const AdminDashboard = ({ onLogout }) => {
   );
 
   return (
-    <div className="admin-dashboard">
-      <aside className="admin-sidebar">
+    <div className={`admin-dashboard ${isMobileSidebarOpen ? 'sidebar-open' : ''}`}>
+      {/* Mobile Sidebar Overlay */}
+      {isMobileSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsMobileSidebarOpen(false)}></div>}
+      
+      <aside className={`admin-sidebar ${isMobileSidebarOpen ? 'show' : ''}`}>
         <div className="admin-sidebar-header">
           <div className="admin-logo-icon">P</div>
           <span className="admin-logo-title">PoolCafe</span>
+          <button className="mobile-close-sidebar" onClick={() => setIsMobileSidebarOpen(false)}>
+            <X size={24} />
+          </button>
         </div>
 
-        <div className={`admin-menu-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => handleTabClick('dashboard')}><Home size={20} /><span>Dashboard</span></div>
-        <div className="admin-menu-item"><Calendar size={20} /><span>Bookings</span></div>
-        <div className={`admin-menu-item ${activeTab === 'history' ? 'active' : ''}`} onClick={() => handleTabClick('history')}><History size={20} /><span>History</span></div>
-        <div className={`admin-menu-item ${activeTab === 'analytics' ? 'active' : ''}`} onClick={() => handleTabClick('analytics')}>
+        <div className={`admin-menu-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => { handleTabClick('dashboard'); setIsMobileSidebarOpen(false); }}><Home size={20} /><span>Dashboard</span></div>
+        <div className={`admin-menu-item ${activeTab === 'history' ? 'active' : ''}`} onClick={() => { handleTabClick('history'); setIsMobileSidebarOpen(false); }}><History size={20} /><span>History</span></div>
+        <div className={`admin-menu-item ${activeTab === 'analytics' ? 'active' : ''}`} onClick={() => { handleTabClick('analytics'); setIsMobileSidebarOpen(false); }}>
           <BarChart2 size={20} /><span>Analytics</span><Lock size={14} className="lock-icon" />
         </div>
-        <div className={`admin-menu-item ${activeTab === 'expenses' ? 'active' : ''}`} onClick={() => handleTabClick('expenses')}>
+        <div className={`admin-menu-item ${activeTab === 'expenses' ? 'active' : ''}`} onClick={() => { handleTabClick('expenses'); setIsMobileSidebarOpen(false); }}>
           <Receipt size={20} /><span>Expenses</span><Lock size={14} className="lock-icon" />
         </div>
-        <div className={`admin-menu-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => handleTabClick('settings')}>
+        <div className={`admin-menu-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => { handleTabClick('settings'); setIsMobileSidebarOpen(false); }}>
           <Settings size={20} /><span>Settings</span><Lock size={14} className="lock-icon" />
         </div>
         
@@ -1156,6 +1173,9 @@ const AdminDashboard = ({ onLogout }) => {
 
       <main className="admin-main">
         <header className="admin-topbar">
+          <button className="mobile-menu-btn" onClick={() => setIsMobileSidebarOpen(true)}>
+            <Menu size={24} />
+          </button>
           <div className="admin-topbar-title">{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</div>
           <div className="user-profile">
             <div className="user-info"><span className="user-name">Admin</span></div>
@@ -1351,8 +1371,18 @@ const AdminDashboard = ({ onLogout }) => {
                       className="order-search-input"
                       value={orderSearch}
                       onChange={(e) => setOrderSearch(e.target.value)}
-                      style={{ padding: '0.6rem 0.6rem 0.6rem 2.2rem', width: '100%', borderRadius: '8px', fontSize: '0.85rem' }}
+                      style={{ padding: '0.6rem 2.2rem 0.6rem 2.2rem', width: '100%', borderRadius: '8px', fontSize: '0.85rem' }}
                     />
+                    {orderSearch && (
+                      <button 
+                        className="clear-search-btn"
+                        onClick={() => setOrderSearch('')}
+                        title="Clear search"
+                        style={{ right: '0.6rem' }}
+                      >
+                        <X size={16} />
+                      </button>
+                    )}
                   </div>
                   
                   <div className="category-filter-pills" style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.2rem', scrollbarWidth: 'none' }}>

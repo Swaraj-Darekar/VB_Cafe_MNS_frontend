@@ -30,9 +30,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
   border-bottom: 1px solid #eef0f5;
-  padding-bottom: 1rem;
+  
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 20;
+  margin: -2rem -2rem 1.5rem -2rem;
+  padding: 1.5rem 2rem;
+  border-radius: 16px 16px 0 0;
 }
 
 .modal-header h2 {
@@ -510,3 +516,55 @@ select.modal-form-input {
   padding: 0.2rem;
 }
 .inline-cancel-btn:hover { color: #ef4444; }
+
+/* --- Mobile Responsiveness for Modals --- */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    padding: 1.5rem;
+    max-height: 85vh;
+  }
+
+  .modal-header {
+    margin: -1.5rem -1.5rem 1rem -1.5rem;
+    padding: 1.2rem 1.5rem;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .modal-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .modal-form-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .modal-btn-add {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  /* New Order Modal specific layout for mobile */
+  .new-order-modal-content {
+    height: 95vh;
+    padding: 1rem;
+  }
+
+  .new-order-layout {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .new-order-right {
+    max-width: 100%;
+    min-width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .cart-summary-row {
+    font-size: 1.1rem;
+  }
+}
+
