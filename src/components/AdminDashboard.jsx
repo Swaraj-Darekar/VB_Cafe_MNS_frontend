@@ -1891,8 +1891,43 @@ const AdminDashboard = ({ onLogout }) => {
           {/* ── FOOTER ── */}
           <div className="receipt-footer">
             <span className="thanks-msg">Thank You!</span>
-            <span className="receipt-footer-sub">Visit Again &bull; Yb's Cafe</span>
+            <span className="receipt-footer-sub">Visit Again &bull; YB'S Cafe</span>
             <span className="receipt-footer-sub" style={{ marginTop: '1mm' }}>System by VB Designs</span>
+          </div>
+
+          {/* ══════════════════════════════════════════
+              ✂  CUT LINE — separates bill from token
+              ══════════════════════════════════════════ */}
+          <div className="receipt-cut-line">
+            <span className="cut-scissors">✂</span>
+            <span className="cut-dashes" />
+            <span className="cut-scissors">✂</span>
+          </div>
+
+          {/* ── KITCHEN TOKEN SLIP ── */}
+          <div className="token-slip">
+
+            <div className="token-slip-title">🎫 KITCHEN TOKEN</div>
+
+            <div className="token-number-display">{printingOrder.id}</div>
+
+            <hr className="divider-solid" />
+
+            <table className="token-items-table">
+              <tbody>
+                {printingOrder.items.map((item, idx) => (
+                  <tr key={idx}>
+                    <td className="tok-name">{item.name}</td>
+                    <td className="tok-qty">× {item.qty}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <hr className="divider-solid" />
+
+            <div className="token-slip-footer">YB'S CAFE — KITCHEN</div>
+
           </div>
 
         </div>,

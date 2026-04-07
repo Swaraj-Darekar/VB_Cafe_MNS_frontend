@@ -279,5 +279,87 @@ body {
     line-height: 1.5 !important;
     color: #333 !important;
   }
-}
 
+  /* ── 11. CUT LINE ── */
+  .receipt-cut-line {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin: 5mm 0 3mm 0 !important;
+    width: 100% !important;
+  }
+
+  .cut-scissors {
+    display: inline-block !important;
+    font-size: 11pt !important;
+    line-height: 1 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .cut-dashes {
+    display: block !important;
+    flex: 1 !important;
+    border-top: 1.5px dashed #000 !important;
+    margin: 0 2mm !important;
+    height: 0 !important;
+  }
+
+  /* ── 12. KITCHEN TOKEN SLIP ── */
+  .token-slip {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .token-slip-title {
+    display: block !important;
+    text-align: center !important;
+    font-size: 9pt !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    margin-bottom: 2mm !important;
+  }
+
+  .token-number-display {
+    display: block !important;
+    text-align: center !important;
+    font-size: 30pt !important;
+    font-weight: 900 !important;
+    letter-spacing: 4px !important;
+    margin: 2mm 0 3mm 0 !important;
+    line-height: 1 !important;
+  }
+
+  .token-items-table {
+    display: table !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 2mm 0 !important;
+  }
+
+  .token-items-table tr {
+    display: table-row !important;
+  }
+
+  .token-items-table td {
+    display: table-cell !important;
+    padding: 1.5mm 0 !important;
+    font-size: 11pt !important;
+    font-weight: 700 !important;
+    vertical-align: middle !important;
+  }
+
+  .tok-name { width: 72% !important; text-align: left !important; }
+  .tok-qty  { width: 28% !important; text-align: right !important; font-size: 12pt !important; font-weight: 900 !important; }
+
+  .token-slip-footer {
+    display: block !important;
+    text-align: center !important;
+    font-size: 8pt !important;
+    font-weight: 700 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    margin-top: 2mm !important;
+    padding-bottom: 4mm !important;
+  }
+}
