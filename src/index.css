@@ -124,14 +124,14 @@ body {
   /* ── 4. RECEIPT CONTAINER ── */
   .receipt-print-area {
     display: block !important;
-    width: 80mm !important;
-    max-width: 80mm !important;
-    margin: 0 !important;
-    padding: 4mm 3mm 8mm 3mm !important; /* Reduced side padding (was 5mm) */
+    width: 72mm !important; /* Safer printable width (most 80mm printers use 72mm) */
+    max-width: 72mm !important;
+    margin: 0 auto !important; /* Centers receipt on the paper */
+    padding: 4mm 2mm 8mm 2mm !important;
     box-sizing: border-box !important;
     font-family: 'Courier New', Courier, monospace !important;
-    font-size: 10.5pt !important; /* Increased from 9.5pt */
-    line-height: 1.2 !important;
+    font-size: 10pt !important; /* Balanced size for visibility */
+    line-height: 1.25 !important;
     color: #000 !important;
     background: #fff !important;
   }
@@ -231,9 +231,9 @@ body {
     border-bottom: none !important;
   }
 
-  /* Column layout: Item (50%) | Qty (15%) | Price (35%) */
-  .it-name  { width: 50% !important; text-align: left !important; padding-right: 1mm !important; }
-  .it-qty   { width: 15% !important; text-align: center !important; }
+  /* Column layout: Item (52%) | Qty (13%) | Price (35%) */
+  .it-name  { width: 52% !important; text-align: left !important; padding-right: 1mm !important; }
+  .it-qty   { width: 13% !important; text-align: center !important; }
   .it-price { width: 35% !important; text-align: right !important; }
 
   /* ── 9. TOTALS ── */
@@ -284,16 +284,18 @@ body {
   /* ── 11. PAGE BREAK — Bill on page 1, Token on page 2 ── */
   .print-bill-section {
     display: block !important;
-    page-break-after: always !important;  /* legacy */
-    break-after: page !important;         /* modern */
-    width: 80mm !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    width: 72mm !important; /* Match container */
+    margin: 0 auto !important;
   }
 
   .print-token-section {
     display: block !important;
-    page-break-before: always !important; /* legacy */
-    break-before: page !important;        /* modern */
-    width: 80mm !important;
+    page-break-before: always !important;
+    break-before: page !important;
+    width: 72mm !important; /* Match container */
+    margin: 0 auto !important;
     padding-top: 4mm !important;
   }
 
