@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { 
   Home, History, BarChart2, Receipt, Settings, LogOut, Lock,
   User, Calendar, ChevronDown, Coffee, Coins, WalletCards,
@@ -1815,35 +1816,43 @@ const AdminDashboard = ({ onLogout }) => {
         </div>
       )}
 
-      {/* --- AUTOMATIC PRINT RECEIPT SECTION (Bulletproof Real-World POS) --- */}
-      {printingOrder && (
+      {/* --- PERFECT THERMAL RECEIPT (80mm POS Style) --- */}
+      {/* Rendered via Portal directly into <body> so CSS body > .receipt-print-area selector works */}
+      {printingOrder && ReactDOM.createPortal(
         <div className="receipt-print-area">
-          <div className="receipt-title">CASH RECEIPT</div>
-          
-          <div className="receipt-row">
-            <span className="receipt-label">Shop Name:</span>
-            <span className="receipt-value">Yb's Cafe</span>
+
+          {/* ── CAFE HEADER (Centered) ── */}
+          <div className="receipt-cafe-name">Yb's Cafe</div>
+          <div className="receipt-cafe-address">Hinjawadi Phase 1, Pune</div>
+          <div className="receipt-cafe-address">Ph: +91 00000 00000</div>
+
+          <hr className="receipt-header-divider" />
+
+          {/* ── BILL META INFO ── */}
+          <div className="receipt-meta-row">
+            <span>Token:</span>
+            <span>{printingOrder.id}</span>
           </div>
-          <div className="receipt-row">
-            <span className="receipt-label">Shop Address:</span>
-            <span className="receipt-value">Hinjawadi, Pune</span>
+          <div className="receipt-meta-row">
+            <span>Date:</span>
+            <span>{new Date().toLocaleDateString('en-GB')}</span>
           </div>
-          <div className="receipt-row">
-            <span className="receipt-label">Date:</span>
-            <span className="receipt-value">{new Date().toLocaleDateString('en-GB')}</span>
+          <div className="receipt-meta-row">
+            <span>Time:</span>
+            <span>{new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
           </div>
-          <div className="receipt-row">
-            <span className="receipt-label">Token No:</span>
-            <span className="receipt-value">{printingOrder.id.toString()}</span>
+          <div className="receipt-meta-row">
+            <span>Payment:</span>
+            <span>{printingOrder.payment_mode}</span>
           </div>
 
-          <div className="receipt-divider-thick"></div>
-          
-          {/* Using a standard table for bulletproof column alignment */}
+          <hr className="divider-dotted" />
+
+          {/* ── ITEMS TABLE ── */}
           <table className="receipt-table">
             <thead>
-              <tr style={{ borderBottom: '1px dotted #000' }}>
-                <th className="it-name">DESCRIPTION</th>
+              <tr>
+                <th className="it-name">ITEM</th>
                 <th className="it-qty">QTY</th>
                 <th className="it-price">PRICE</th>
               </tr>
@@ -1851,40 +1860,44 @@ const AdminDashboard = ({ onLogout }) => {
             <tbody>
               {printingOrder.items.map((item, idx) => (
                 <tr key={idx}>
-                  <td className="it-name" style={{ textTransform: 'uppercase' }}>{item.name}</td>
+                  <td className="it-name">{item.name}</td>
                   <td className="it-qty">{item.qty}</td>
-                  <td className="it-price">Rs.{item.price * item.qty}</td>
+                  <td className="it-price">Rs.{(item.price * item.qty).toLocaleString('en-IN')}</td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          <div className="receipt-divider-thick"></div>
+          <hr className="divider-solid" />
 
-          <div className="receipt-row">
-            <span className="receipt-label">Subtotal</span>
-            <span className="receipt-value">Rs.{printingOrder.subtotal.toLocaleString('en-IN')}</span>
+          {/* ── TOTALS ── */}
+          <div className="tot-row">
+            <span>Subtotal</span>
+            <span>Rs.{printingOrder.subtotal.toLocaleString('en-IN')}</span>
           </div>
           {printingOrder.discount > 0 && (
-            <div className="receipt-row">
-              <span className="receipt-label">Discount</span>
-              <span className="receipt-value">- Rs.{printingOrder.discount.toLocaleString('en-IN')}</span>
+            <div className="tot-row">
+              <span>Discount</span>
+              <span>- Rs.{printingOrder.discount.toLocaleString('en-IN')}</span>
             </div>
           )}
-          
-          <div className="receipt-divider-thick"></div>
 
-          <div className="receipt-row tot-row grand">
-            <span>TOTAL</span>
+          <div className="tot-row grand">
+            <span>GRAND TOTAL</span>
             <span>Rs.{printingOrder.total.toLocaleString('en-IN')}</span>
           </div>
 
+          <hr className="receipt-header-divider" />
+
+          {/* ── FOOTER ── */}
           <div className="receipt-footer">
-            <div className="thanks-msg">THANK YOU!</div>
-            <div style={{ fontSize: '10px' }}>System by VB Designs</div>
-            <div style={{ height: '80px', marginTop: '10px' }}></div>
+            <span className="thanks-msg">Thank You!</span>
+            <span className="receipt-footer-sub">Visit Again &bull; Yb's Cafe</span>
+            <span className="receipt-footer-sub" style={{ marginTop: '1mm' }}>System by VB Designs</span>
           </div>
-        </div>
+
+        </div>,
+        document.body
       )}
       {/* Section Security Modal */}
       {isPasswordModalOpen && (
