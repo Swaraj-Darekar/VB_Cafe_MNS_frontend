@@ -280,36 +280,23 @@ body {
     color: #333 !important;
   }
 
-  /* ── 11. CUT LINE ── */
-  .receipt-cut-line {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    margin: 5mm 0 3mm 0 !important;
-    width: 100% !important;
-  }
-
-  .cut-scissors {
-    display: inline-block !important;
-    font-size: 11pt !important;
-    line-height: 1 !important;
-    flex-shrink: 0 !important;
-  }
-
-  .cut-dashes {
+  /* ── 11. PAGE BREAK — Bill on page 1, Token on page 2 ── */
+  .print-bill-section {
     display: block !important;
-    flex: 1 !important;
-    border-top: 1.5px dashed #000 !important;
-    margin: 0 2mm !important;
-    height: 0 !important;
+    page-break-after: always !important;  /* legacy */
+    break-after: page !important;         /* modern */
+    width: 80mm !important;
+  }
+
+  .print-token-section {
+    display: block !important;
+    page-break-before: always !important; /* legacy */
+    break-before: page !important;        /* modern */
+    width: 80mm !important;
+    padding-top: 4mm !important;
   }
 
   /* ── 12. KITCHEN TOKEN SLIP ── */
-  .token-slip {
-    display: block !important;
-    width: 100% !important;
-  }
-
   .token-slip-title {
     display: block !important;
     text-align: center !important;

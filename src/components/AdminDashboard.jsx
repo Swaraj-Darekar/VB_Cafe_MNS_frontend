@@ -1821,91 +1821,92 @@ const AdminDashboard = ({ onLogout }) => {
       {printingOrder && ReactDOM.createPortal(
         <div className="receipt-print-area">
 
-          {/* ── CAFE HEADER (Centered) ── */}
-          <div className="receipt-cafe-name">YB'S Cafe</div>
-          <div className="receipt-cafe-address">Marunji Road, Hinjawadi Phase 1, Pune</div>
+          {/* ═══════════════════════════════════
+              PAGE 1 — CUSTOMER BILL
+              ═══════════════════════════════════ */}
+          <div className="print-bill-section">
 
-          <hr className="receipt-header-divider" />
+            {/* ── CAFE HEADER ── */}
+            <div className="receipt-cafe-name">YB'S Cafe</div>
+            <div className="receipt-cafe-address">Marunji Road, Hinjawadi Phase 1, Pune</div>
 
-          {/* ── BILL META INFO ── */}
-          <div className="receipt-meta-row">
-            <span>Token:</span>
-            <span>{printingOrder.id}</span>
-          </div>
-          <div className="receipt-meta-row">
-            <span>Date:</span>
-            <span>{new Date().toLocaleDateString('en-GB')}</span>
-          </div>
-          <div className="receipt-meta-row">
-            <span>Time:</span>
-            <span>{new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
-          </div>
-          <div className="receipt-meta-row">
-            <span>Payment:</span>
-            <span>{printingOrder.payment_mode}</span>
-          </div>
+            <hr className="receipt-header-divider" />
 
-          <hr className="divider-dotted" />
-
-          {/* ── ITEMS TABLE ── */}
-          <table className="receipt-table">
-            <thead>
-              <tr>
-                <th className="it-name">ITEM</th>
-                <th className="it-qty">QTY</th>
-                <th className="it-price">PRICE</th>
-              </tr>
-            </thead>
-            <tbody>
-              {printingOrder.items.map((item, idx) => (
-                <tr key={idx}>
-                  <td className="it-name">{item.name}</td>
-                  <td className="it-qty">{item.qty}</td>
-                  <td className="it-price">Rs.{(item.price * item.qty).toLocaleString('en-IN')}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <hr className="divider-solid" />
-
-          {/* ── TOTALS ── */}
-          <div className="tot-row">
-            <span>Subtotal</span>
-            <span>Rs.{printingOrder.subtotal.toLocaleString('en-IN')}</span>
-          </div>
-          {printingOrder.discount > 0 && (
-            <div className="tot-row">
-              <span>Discount</span>
-              <span>- Rs.{printingOrder.discount.toLocaleString('en-IN')}</span>
+            {/* ── BILL META ── */}
+            <div className="receipt-meta-row">
+              <span>Token:</span>
+              <span>{printingOrder.id}</span>
             </div>
-          )}
+            <div className="receipt-meta-row">
+              <span>Date:</span>
+              <span>{new Date().toLocaleDateString('en-GB')}</span>
+            </div>
+            <div className="receipt-meta-row">
+              <span>Time:</span>
+              <span>{new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
+            </div>
+            <div className="receipt-meta-row">
+              <span>Payment:</span>
+              <span>{printingOrder.payment_mode}</span>
+            </div>
 
-          <div className="tot-row grand">
-            <span>GRAND TOTAL</span>
-            <span>Rs.{printingOrder.total.toLocaleString('en-IN')}</span>
+            <hr className="divider-dotted" />
+
+            {/* ── ITEMS TABLE ── */}
+            <table className="receipt-table">
+              <thead>
+                <tr>
+                  <th className="it-name">ITEM</th>
+                  <th className="it-qty">QTY</th>
+                  <th className="it-price">PRICE</th>
+                </tr>
+              </thead>
+              <tbody>
+                {printingOrder.items.map((item, idx) => (
+                  <tr key={idx}>
+                    <td className="it-name">{item.name}</td>
+                    <td className="it-qty">{item.qty}</td>
+                    <td className="it-price">Rs.{(item.price * item.qty).toLocaleString('en-IN')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <hr className="divider-solid" />
+
+            {/* ── TOTALS ── */}
+            <div className="tot-row">
+              <span>Subtotal</span>
+              <span>Rs.{printingOrder.subtotal.toLocaleString('en-IN')}</span>
+            </div>
+            {printingOrder.discount > 0 && (
+              <div className="tot-row">
+                <span>Discount</span>
+                <span>- Rs.{printingOrder.discount.toLocaleString('en-IN')}</span>
+              </div>
+            )}
+            <div className="tot-row grand">
+              <span>GRAND TOTAL</span>
+              <span>Rs.{printingOrder.total.toLocaleString('en-IN')}</span>
+            </div>
+
+            <hr className="receipt-header-divider" />
+
+            {/* ── FOOTER ── */}
+            <div className="receipt-footer">
+              <span className="thanks-msg">Thank You!</span>
+              <span className="receipt-footer-sub">Visit Again &bull; YB'S Cafe</span>
+              <span className="receipt-footer-sub" style={{ marginTop: '1mm' }}>System by VB Designs</span>
+            </div>
+
           </div>
+          {/* END PAGE 1 */}
 
-          <hr className="receipt-header-divider" />
-
-          {/* ── FOOTER ── */}
-          <div className="receipt-footer">
-            <span className="thanks-msg">Thank You!</span>
-            <span className="receipt-footer-sub">Visit Again &bull; YB'S Cafe</span>
-            <span className="receipt-footer-sub" style={{ marginTop: '1mm' }}>System by VB Designs</span>
-          </div>
-
-          {/* ══════════════════════════════════════════
-              ✂  CUT LINE — separates bill from token
-              ══════════════════════════════════════════ */}
-          <div className="receipt-cut-line">
-            <span className="cut-scissors">✂</span>
-            <span className="cut-dashes" />
-            <span className="cut-scissors">✂</span>
-          </div>
-
-          {/* ── KITCHEN TOKEN SLIP ── */}
-          <div className="token-slip">
+          {/* ═══════════════════════════════════
+              PAGE 2 — KITCHEN TOKEN SLIP
+              (Prints as a separate page)
+              ═══════════════════════════════════ */}
+          <div className="print-token-section">
 
             <div className="token-slip-title">🎫 KITCHEN TOKEN</div>
 
@@ -1929,8 +1930,10 @@ const AdminDashboard = ({ onLogout }) => {
             <div className="token-slip-footer">YB'S CAFE — KITCHEN</div>
 
           </div>
+          {/* END PAGE 2 */}
 
         </div>,
+
         document.body
       )}
       {/* Section Security Modal */}
