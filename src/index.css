@@ -124,13 +124,13 @@ body {
   /* ── 4. RECEIPT CONTAINER ── */
   .receipt-print-area {
     display: block !important;
-    width: 72mm !important; /* Safer printable width (most 80mm printers use 72mm) */
-    max-width: 72mm !important;
+    width: 68mm !important; /* Ultra-safe printable width (prevents clipping) */
+    max-width: 68mm !important;
     margin: 0 auto !important; /* Centers receipt on the paper */
-    padding: 4mm 2mm 8mm 2mm !important;
+    padding: 3mm 1mm 6mm 1mm !important; /* Minimal internal padding */
     box-sizing: border-box !important;
     font-family: 'Courier New', Courier, monospace !important;
-    font-size: 10pt !important; /* Balanced size for visibility */
+    font-size: 9.5pt !important; /* Back to slightly smaller for safety */
     line-height: 1.25 !important;
     color: #000 !important;
     background: #fff !important;
@@ -231,10 +231,10 @@ body {
     border-bottom: none !important;
   }
 
-  /* Column layout: Item (52%) | Qty (13%) | Price (35%) */
-  .it-name  { width: 52% !important; text-align: left !important; padding-right: 1mm !important; }
-  .it-qty   { width: 13% !important; text-align: center !important; }
-  .it-price { width: 35% !important; text-align: right !important; }
+  /* Column layout: Item (45%) | Qty (15%) | Price (40%) */
+  .it-name  { width: 45% !important; text-align: left !important; padding-right: 1mm !important; }
+  .it-qty   { width: 15% !important; text-align: center !important; }
+  .it-price { width: 40% !important; text-align: right !important; }
 
   /* ── 9. TOTALS ── */
   .tot-row {
@@ -286,7 +286,7 @@ body {
     display: block !important;
     page-break-after: always !important;
     break-after: page !important;
-    width: 72mm !important; /* Match container */
+    width: 68mm !important; /* Match ultra-safe container */
     margin: 0 auto !important;
   }
 
@@ -294,7 +294,7 @@ body {
     display: block !important;
     page-break-before: always !important;
     break-before: page !important;
-    width: 72mm !important; /* Match container */
+    width: 68mm !important; /* Match ultra-safe container */
     margin: 0 auto !important;
     padding-top: 4mm !important;
   }
@@ -340,8 +340,8 @@ body {
     overflow-wrap: break-word !important; /* Added to ensure wrapping */
   }
 
-  .tok-name { width: 65% !important; text-align: left !important; padding-right: 1mm !important; }
-  .tok-qty  { width: 35% !important; text-align: right !important; font-size: 11pt !important; font-weight: 900 !important; }
+  .tok-name { width: 60% !important; text-align: left !important; padding-right: 1mm !important; }
+  .tok-qty  { width: 40% !important; text-align: right !important; font-size: 11pt !important; font-weight: 950 !important; }
 
   .token-slip-footer {
     display: block !important;
