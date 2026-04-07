@@ -1822,9 +1822,8 @@ const AdminDashboard = ({ onLogout }) => {
         <div className="receipt-print-area">
 
           {/* ── CAFE HEADER (Centered) ── */}
-          <div className="receipt-cafe-name">Yb's Cafe</div>
-          <div className="receipt-cafe-address">Hinjawadi Phase 1, Pune</div>
-          <div className="receipt-cafe-address">Ph: +91 00000 00000</div>
+          <div className="receipt-cafe-name">YB'S Cafe</div>
+          <div className="receipt-cafe-address">Marunji Road, Hinjawadi Phase 1, Pune</div>
 
           <hr className="receipt-header-divider" />
 
