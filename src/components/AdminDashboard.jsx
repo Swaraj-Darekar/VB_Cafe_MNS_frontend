@@ -562,14 +562,15 @@ const AdminDashboard = ({ onLogout }) => {
   const handleGenerateBill = async () => {
     if (cart.length === 0) return;
     setIsLoading(true);
+    const discountAmount = (subtotal * billDiscount) / 100;
     try {
       const res = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          total_amount: subtotal - billDiscount, 
+          total_amount: subtotal - discountAmount, 
           payment_mode: paymentMode,
-          discount: billDiscount,
+          discount: discountAmount,
           items: cart.map(item => ({
             item_id: item.id,
             name: item.name,
@@ -583,13 +584,14 @@ const AdminDashboard = ({ onLogout }) => {
         
         const displayId = orderData.token_no ? `#${orderData.token_no}` : `#${(orderData.order_id || '').toString().slice(0, 8).toUpperCase()}`;
         
+        const discountAmount = (subtotal * billDiscount) / 100;
         const fullOrderForPrint = {
           id: displayId,
           timestamp: new Date().toLocaleString(),
           items: [...cart],
           subtotal: subtotal,
-          discount: billDiscount,
-          total: subtotal - billDiscount,
+          discount: discountAmount,
+          total: subtotal - discountAmount,
           payment_mode: paymentMode
         };
         setPrintingOrder(fullOrderForPrint);
@@ -1494,7 +1496,7 @@ const AdminDashboard = ({ onLogout }) => {
                       }}
                     >
                       {billDiscount > 0 ? <Pencil size={12} /> : <Plus size={12} />}
-                      {billDiscount > 0 ? `Edit Discount (₹${billDiscount})` : 'Add Discount (₹)'}
+                      {billDiscount > 0 ? `Edit Discount (${billDiscount}%)` : 'Add Discount (%)'}
                     </button>
                     {billDiscount > 0 && (
                       <button 
@@ -1515,13 +1517,13 @@ const AdminDashboard = ({ onLogout }) => {
                     )}
                     {billDiscount > 0 && (
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#ef4444', marginBottom: '0.1rem' }}>
-                        <span>Discount</span>
-                        <span>- ₹{billDiscount.toLocaleString('en-IN')}</span>
+                        <span>Discount ({billDiscount}%)</span>
+                        <span>- ₹{((subtotal * billDiscount) / 100).toLocaleString('en-IN')}</span>
                       </div>
                     )}
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1rem', fontWeight: 800, color: '#1e1e2d' }}>
                       <span style={{ fontWeight: 700 }}>Total</span>
-                      <span>₹{(subtotal - billDiscount).toLocaleString('en-IN')}</span>
+                      <span>₹{(subtotal - (subtotal * billDiscount) / 100).toLocaleString('en-IN')}</span>
                     </div>
                   </div>
 
@@ -1812,31 +1814,37 @@ const AdminDashboard = ({ onLogout }) => {
       {/* Mini Discount Modal */}
       {isDiscountModalOpen && (
         <div className="modal-overlay" style={{ zIndex: 3000 }} onClick={() => setIsDiscountModalOpen(false)}>
-          <div className="modal-content mini-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '320px', padding: '1.5rem' }}>
-            <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: 700 }}>Apply Discount</h3>
+          <div className="modal-content" style={{ maxWidth: '350px', padding: '1.5rem' }} onClick={e => e.stopPropagation()}>
+            <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: 700 }}>Apply Discount (%)</h3>
             <div className="modal-form-group" style={{ marginBottom: '1.5rem' }}>
-              <label>Amount (₹)</label>
-              <input 
-                autoFocus
-                type="number"
-                className="modal-form-input"
-                placeholder="0"
-                value={tempDiscount === 0 ? '' : tempDiscount}
-                onChange={(e) => setTempDiscount(Math.max(0, parseFloat(e.target.value) || 0))}
-                onKeyPress={(e) => e.key === 'Enter' && (setBillDiscount(tempDiscount), setIsDiscountModalOpen(false))}
-              />
+              <label>Discount Percentage (%)</label>
+              <div style={{ position: 'relative' }}>
+                <input 
+                  type="number" 
+                  className="modal-form-input" 
+                  placeholder="e.g. 10" 
+                  autoFocus
+                  value={tempDiscount === 0 ? '' : tempDiscount}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value) || 0;
+                    setTempDiscount(Math.min(100, Math.max(0, val)));
+                  }}
+                  onKeyPress={(e) => e.key === 'Enter' && (setBillDiscount(tempDiscount), setIsDiscountModalOpen(false))}
+                />
+                <span style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', fontWeight: 700, color: '#a1a5b7' }}>%</span>
+              </div>
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', gap: '1rem' }}>
               <button 
-                className="confirm-btn-cancel" 
-                style={{ flex: 1, padding: '0.6rem' }} 
+                className="btn-secondary-white" 
+                style={{ flex: 1 }} 
                 onClick={() => setIsDiscountModalOpen(false)}
               >
                 Cancel
               </button>
               <button 
-                className="generate-bill-btn" 
-                style={{ flex: 1, padding: '0.6rem' }} 
+                className="btn-primary-purple" 
+                style={{ flex: 1, backgroundColor: '#10b981' }} 
                 onClick={() => { setBillDiscount(tempDiscount); setIsDiscountModalOpen(false); }}
               >
                 Apply
