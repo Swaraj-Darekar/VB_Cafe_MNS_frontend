@@ -115,7 +115,7 @@ const AdminDashboard = ({ onLogout }) => {
 
   const handleSecurityUnlock = (e) => {
     e.preventDefault();
-    if (sectionPassword === 'admin') {
+    if (sectionPassword === 'yb@7878') {
       setIsSectionUnlocked(true);
       if (pendingTab) setActiveTab(pendingTab);
       setIsPasswordModalOpen(false);
