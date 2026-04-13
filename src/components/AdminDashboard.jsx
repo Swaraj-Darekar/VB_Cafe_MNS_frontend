@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { 
+import {
   Home, History, BarChart2, Receipt, Settings, LogOut, Lock,
   User, Calendar, ChevronDown, Coffee, Coins, WalletCards,
   CalendarDays, TrendingDown, TrendingUp, Trash2, Eye, X,
@@ -18,15 +18,15 @@ import { API_URL } from '../config';
 const AdminDashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  
+
   // Modals Data & State
   const [isAddItemOpen, setIsAddItemOpen] = useState(false);
   const [isViewMenuOpen, setIsViewMenuOpen] = useState(false);
   const [isNewOrderOpen, setIsNewOrderOpen] = useState(false);
-  
+
   // Cart State
   const [cart, setCart] = useState([]);
-  
+
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [orderHistory, setOrderHistory] = useState([]);
@@ -41,7 +41,7 @@ const AdminDashboard = ({ onLogout }) => {
     yesterday: { total: 0, online: 0, cash: 0, count: 0 },
     monthly: { sales: 0, expenses: 0, profit: 0 }
   });
-  
+
   // Form State
   const [newCategoryName, setNewCategoryName] = useState('');
   const [itemCategoryId, setItemCategoryId] = useState('');
@@ -99,7 +99,7 @@ const AdminDashboard = ({ onLogout }) => {
   }, [activeTab]);
 
   // Cart State Management
-  const [paymentMode, setPaymentMode] = useState('Cash'); 
+  const [paymentMode, setPaymentMode] = useState('Cash');
 
   // Tab Switching Logic with Security Guard
   const handleTabClick = (tab) => {
@@ -144,7 +144,7 @@ const AdminDashboard = ({ onLogout }) => {
 
   const handleReprintOrder = (order) => {
     if (!order) return;
-    
+
     // Transform History Order to Printing Format
     // Use token_no if available, else fallback to a readable slice of the ID
     const displayId = order.token_no ? `#${order.token_no}` : `#${(order.id || '').toString().slice(0, 8).toUpperCase()}`;
@@ -162,9 +162,9 @@ const AdminDashboard = ({ onLogout }) => {
       total: parseFloat(order.total_amount),
       payment_mode: order.payment_mode
     };
-    
+
     setPrintingOrder(printData);
-    
+
     // Auto-trigger window print
     setTimeout(() => {
       window.print();
@@ -193,7 +193,7 @@ const AdminDashboard = ({ onLogout }) => {
     } catch (err) {
       console.error("Failed to fetch wallet balance", err);
       // Fallback to high balance only if absolutely failing (to prevent block)
-      if (walletBalance === null) setWalletBalance(100); 
+      if (walletBalance === null) setWalletBalance(100);
     }
   };
 
@@ -279,7 +279,7 @@ const AdminDashboard = ({ onLogout }) => {
   // Helper to group History by Date
   const groupHistoryByDay = () => {
     const groups = {};
-    
+
     // Helper to get local date string YYYY-MM-DD
     const getLocalDateStr = (d) => {
       const year = d.getFullYear();
@@ -291,7 +291,7 @@ const AdminDashboard = ({ onLogout }) => {
     orderHistory.forEach(order => {
       const dateObj = new Date(order.created_at);
       const dateKey = getLocalDateStr(dateObj); // Local YYYY-MM-DD
-      
+
       if (!groups[dateKey]) {
         groups[dateKey] = {
           date: dateKey,
@@ -301,7 +301,7 @@ const AdminDashboard = ({ onLogout }) => {
           onlineCount: 0
         };
       }
-      
+
       groups[dateKey].orders.push(order);
       groups[dateKey].totalAmount += parseFloat(order.total_amount);
       if (order.payment_mode === 'Online') groups[dateKey].onlineCount++;
@@ -315,7 +315,7 @@ const AdminDashboard = ({ onLogout }) => {
       const yestDate = new Date();
       yestDate.setDate(yestDate.getDate() - 1);
       const yesterdayStr = getLocalDateStr(yestDate);
-      
+
       let label = group.date;
       if (group.date === todayStr) label = "Today";
       else if (group.date === yesterdayStr) label = "Yesterday";
@@ -326,13 +326,13 @@ const AdminDashboard = ({ onLogout }) => {
           weekday: 'short', day: '2-digit', month: 'short'
         });
       }
-      
+
       return { ...group, label };
     });
   };
 
   const toggleDay = (dateKey) => {
-    setExpandedDays(prev => 
+    setExpandedDays(prev =>
       prev.includes(dateKey) ? prev.filter(d => d !== dateKey) : [...prev, dateKey]
     );
   };
@@ -341,21 +341,21 @@ const AdminDashboard = ({ onLogout }) => {
   const handleAddExpense = async () => {
     if (!newExpenseName.trim() || !newExpenseAmount) return;
     setIsLoading(true);
-    
+
     // Save current values and clear inputs immediately for snappy UI
     const nameToSave = newExpenseName.trim();
     const amountToSave = parseFloat(newExpenseAmount);
     const dateToSave = newExpenseDate;
-    
+
     setNewExpenseName('');
     setNewExpenseAmount('');
-    
+
     try {
       const res = await fetch(`${API_URL}/expenses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          description: nameToSave, 
+        body: JSON.stringify({
+          description: nameToSave,
           amount: amountToSave,
           created_at: dateToSave
         })
@@ -510,7 +510,7 @@ const AdminDashboard = ({ onLogout }) => {
         setEditingCatId(null);
         setIsEditCatModalOpen(false);
         await fetchCategories();
-        await fetchMenuItems(); 
+        await fetchMenuItems();
       } else {
         alert('Failed to update category');
       }
@@ -558,7 +558,7 @@ const AdminDashboard = ({ onLogout }) => {
   };
 
   const clearCart = () => setCart([]);
-  
+
   const handleGenerateBill = async () => {
     if (cart.length === 0) return;
     setIsLoading(true);
@@ -567,8 +567,8 @@ const AdminDashboard = ({ onLogout }) => {
       const res = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          total_amount: subtotal - discountAmount, 
+        body: JSON.stringify({
+          total_amount: subtotal - discountAmount,
           payment_mode: paymentMode,
           discount: discountAmount,
           items: cart.map(item => ({
@@ -581,9 +581,9 @@ const AdminDashboard = ({ onLogout }) => {
       });
       if (res.ok) {
         const orderData = await res.json();
-        
+
         const displayId = orderData.token_no ? `#${orderData.token_no}` : `#${(orderData.order_id || '').toString().slice(0, 8).toUpperCase()}`;
-        
+
         const discountAmount = (subtotal * billDiscount) / 100;
         const fullOrderForPrint = {
           id: displayId,
@@ -595,7 +595,7 @@ const AdminDashboard = ({ onLogout }) => {
           payment_mode: paymentMode
         };
         setPrintingOrder(fullOrderForPrint);
-        
+
         // Clean up UI
         setIsNewOrderOpen(false);
         setBillDiscount(0);
@@ -603,7 +603,7 @@ const AdminDashboard = ({ onLogout }) => {
         clearCart();
         fetchWalletBalance();
         fetchAnalyticsSummary();
-        
+
         // Auto-print after state reflects
         setTimeout(() => {
           window.print();
@@ -627,7 +627,7 @@ const AdminDashboard = ({ onLogout }) => {
     // 1. Handle Modal States
     if (isNewOrderOpen) {
       window.history.pushState({ view: 'modal' }, '');
-    } 
+    }
     // 2. Handle Tab States (for navigation safety)
     else if (activeTab !== 'dashboard') {
       window.history.pushState({ view: activeTab }, '');
@@ -639,7 +639,7 @@ const AdminDashboard = ({ onLogout }) => {
         setIsNewOrderOpen(false);
         return;
       }
-      
+
       // Priority 2: Return to Dashboard if in another tab
       if (activeTab !== 'dashboard') {
         setActiveTab('dashboard');
@@ -672,7 +672,7 @@ const AdminDashboard = ({ onLogout }) => {
         <div className="dashboard-sticky-header">
           {/* Wallet Threshold Alerts */}
           {walletBalance !== null && walletBalance < 15 && walletBalance >= 10 && (
-            <div style={{ 
+            <div style={{
               backgroundColor: '#fff7ed', border: '1px solid #fdba74', color: '#9a3412',
               padding: '12px 16px', borderRadius: '12px', marginBottom: '1.5rem',
               display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', fontWeight: 600
@@ -683,7 +683,7 @@ const AdminDashboard = ({ onLogout }) => {
           )}
 
           {walletBalance !== null && walletBalance < 10 && (
-            <div style={{ 
+            <div style={{
               backgroundColor: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b',
               padding: '12px 16px', borderRadius: '12px', marginBottom: '1.5rem',
               display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', fontWeight: 600
@@ -696,15 +696,15 @@ const AdminDashboard = ({ onLogout }) => {
           {/* Header containing Wallet & Action */}
           <div className="dashboard-topbar-actions">
             <div className="dashboard-actions-left">
-              <h2 style={{margin: 0, color: '#1e1e2d', fontSize: '1.2rem', fontWeight: 700}}>Menu POS</h2>
-              <p style={{margin: 0, color: '#a1a5b7', fontSize: '0.85rem'}}>View available inventory</p>
+              <h2 style={{ margin: 0, color: '#1e1e2d', fontSize: '1.2rem', fontWeight: 700 }}>Menu POS</h2>
+              <p style={{ margin: 0, color: '#a1a5b7', fontSize: '0.85rem' }}>View available inventory</p>
             </div>
             <div className="dashboard-actions-right">
-              <button 
-                className={`new-order-btn top-btn ${walletBalance !== null && walletBalance < 10 ? 'blocked' : ''}`} 
+              <button
+                className={`new-order-btn top-btn ${walletBalance !== null && walletBalance < 10 ? 'blocked' : ''}`}
                 onClick={() => (walletBalance === null || walletBalance >= 10) && setIsNewOrderOpen(true)}
-                style={{ 
-                  opacity: (walletBalance !== null && walletBalance < 10) ? 0.5 : 1, 
+                style={{
+                  opacity: (walletBalance !== null && walletBalance < 10) ? 0.5 : 1,
                   cursor: (walletBalance !== null && walletBalance < 10) ? 'not-allowed' : 'pointer',
                   backgroundColor: (walletBalance !== null && walletBalance < 10) ? '#a1a5b7' : '#6366f1'
                 }}
@@ -714,11 +714,11 @@ const AdminDashboard = ({ onLogout }) => {
                 {walletBalance !== null && walletBalance < 10 ? 'Blocked' : 'New Order'}
               </button>
               <div className={`wallet-card-admin top-card ${walletBalance !== null && walletBalance < 10 ? 'low-bal' : ''}`} style={{
-                 border: walletBalance !== null && walletBalance < 10 ? '1px solid #ef4444' : '1px solid #eef0f5'
+                border: walletBalance !== null && walletBalance < 10 ? '1px solid #ef4444' : '1px solid #eef0f5'
               }}>
                 <span className="label">Wallet Balance</span>
                 <span className="value" style={{ color: (walletBalance !== null && walletBalance < 10) ? '#ef4444' : '#0369a1' }}>
-                  ₹{(walletBalance || 0).toLocaleString('en-IN', {minimumFractionDigits: 0})}
+                  ₹{(walletBalance || 0).toLocaleString('en-IN', { minimumFractionDigits: 0 })}
                 </span>
               </div>
             </div>
@@ -728,15 +728,15 @@ const AdminDashboard = ({ onLogout }) => {
           <div className="dashboard-controls-row">
             <div className="search-bar-wrapper">
               <Search size={18} className="search-icon" />
-              <input 
-                type="text" 
-                placeholder="Search items..." 
-                value={searchTerm} 
-                onChange={(e) => setSearchTerm(e.target.value)} 
+              <input
+                type="text"
+                placeholder="Search items..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="dashboard-search-input"
               />
               {searchTerm && (
-                <button 
+                <button
                   className="clear-search-btn"
                   onClick={() => setSearchTerm('')}
                   title="Clear search"
@@ -745,17 +745,17 @@ const AdminDashboard = ({ onLogout }) => {
                 </button>
               )}
             </div>
-            
+
             <div className="category-filter-tabs">
-              <button 
+              <button
                 className={`filter-tab ${selectedCategory === 'All' ? 'active' : ''}`}
                 onClick={() => setSelectedCategory('All')}
               >
                 All
               </button>
               {categories.map(cat => (
-                <button 
-                  key={cat.id} 
+                <button
+                  key={cat.id}
                   className={`filter-tab ${selectedCategory === cat.id ? 'active' : ''}`}
                   onClick={() => setSelectedCategory(cat.id)}
                 >
@@ -771,14 +771,14 @@ const AdminDashboard = ({ onLogout }) => {
           {dashboardFilteredItems.length === 0 ? (
             <div className="empty-state-msg">No items found matching your filters.</div>
           ) : (
-             dashboardFilteredItems.map(item => (
-                <div key={item.id} className="pos-item-card">
-                  <div className="pos-item-cat">
-                    {item.menu_categories ? item.menu_categories.name : 'Unknown'}
-                  </div>
-                  <span className="pos-item-name">{item.name}</span>
-                  <span className="pos-item-price">₹{item.price}</span>
+            dashboardFilteredItems.map(item => (
+              <div key={item.id} className="pos-item-card">
+                <div className="pos-item-cat">
+                  {item.menu_categories ? item.menu_categories.name : 'Unknown'}
                 </div>
+                <span className="pos-item-name">{item.name}</span>
+                <span className="pos-item-price">₹{item.price}</span>
+              </div>
             ))
           )}
         </div>
@@ -801,7 +801,7 @@ const AdminDashboard = ({ onLogout }) => {
           </div>
           <button className="history-filter-btn">Last 30 Days</button>
         </div>
-        
+
         <div className="history-accordion">
           {groupedDays.length === 0 ? (
             <div className="empty-history">No orders found. Click "New Order" to start.</div>
@@ -834,9 +834,9 @@ const AdminDashboard = ({ onLogout }) => {
                           <span style={{ fontWeight: 800, color: '#6366f1', marginRight: '10px' }}>
                             {order.token_no ? `#${order.token_no}` : `#${(order.id || '').slice(0, 4)}`}
                           </span>
-                          {new Date(order.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true})}
+                          {new Date(order.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
                         </div>
-                        
+
                         <div className="order-badges">
                           <span className={`payment-badge ${order.payment_mode.toLowerCase()}`}>
                             {order.payment_mode}
@@ -863,7 +863,7 @@ const AdminDashboard = ({ onLogout }) => {
 
   const renderAnalytics = () => (
     <div className="admin-dashboard-body">
-      <div className="analytics-header" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+      <div className="analytics-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div className="analytics-title-container">
           <h1>Business Analytics</h1>
           <p>Real-time performance overview</p>
@@ -894,7 +894,7 @@ const AdminDashboard = ({ onLogout }) => {
           </div>
           <div className="analytics-card-value">₹{analyticsSummary.yesterday.total.toLocaleString('en-IN')}</div>
           <div className="analytics-card-footer">
-             <div className="footer-item">Performance vs Today</div>
+            <div className="footer-item">Performance vs Today</div>
           </div>
         </div>
 
@@ -928,46 +928,46 @@ const AdminDashboard = ({ onLogout }) => {
       </div>
 
       {/* Monthly Settlement History */}
-      <div className="settlement-history-container" style={{marginTop: '3rem'}}>
+      <div className="settlement-history-container" style={{ marginTop: '3rem' }}>
         <div className="section-header">
-          <h2 style={{fontSize: '1.4rem', fontWeight: 700, color: '#1e1e2d'}}>Monthly Settlement History</h2>
-          <p style={{color: '#a1a5b7', fontSize: '0.9rem'}}>Overview of archived months and finalized profits</p>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, color: '#1e1e2d' }}>Monthly Settlement History</h2>
+          <p style={{ color: '#a1a5b7', fontSize: '0.9rem' }}>Overview of archived months and finalized profits</p>
         </div>
 
-        <div className="expense-card" style={{marginTop: '1.5rem', padding: '0'}}>
-          <table className="expense-table" style={{borderRadius: '16px', overflow: 'hidden'}}>
-            <thead style={{backgroundColor: '#fcfcfd'}}>
+        <div className="expense-card" style={{ marginTop: '1.5rem', padding: '0' }}>
+          <table className="expense-table" style={{ borderRadius: '16px', overflow: 'hidden' }}>
+            <thead style={{ backgroundColor: '#fcfcfd' }}>
               <tr>
-                <th style={{padding: '1.2rem'}}>Month & Year</th>
+                <th style={{ padding: '1.2rem' }}>Month & Year</th>
                 <th>Total Sell</th>
                 <th>Total Expense</th>
                 <th>Net Profit</th>
-                <th style={{textAlign: 'center'}}>Action</th>
+                <th style={{ textAlign: 'center' }}>Action</th>
               </tr>
             </thead>
             <tbody>
               {settlements.length === 0 ? (
                 <tr>
-                  <td colSpan="5" style={{textAlign: 'center', padding: '3rem', color: '#a1a5b7'}}>
+                  <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', color: '#a1a5b7' }}>
                     No settled months yet. Use the "Settle This Month" button to archive data.
                   </td>
                 </tr>
               ) : (
                 settlements.map(s => (
                   <tr key={s.id}>
-                    <td style={{padding: '1.2rem', fontWeight: 700}}>{s.month_label}</td>
-                    <td style={{fontWeight: 600}}>₹{parseFloat(s.total_sales).toLocaleString('en-IN')}</td>
-                    <td 
-                      style={{color: '#ef4444', fontWeight: 600, cursor: 'pointer'}} 
+                    <td style={{ padding: '1.2rem', fontWeight: 700 }}>{s.month_label}</td>
+                    <td style={{ fontWeight: 600 }}>₹{parseFloat(s.total_sales).toLocaleString('en-IN')}</td>
+                    <td
+                      style={{ color: '#ef4444', fontWeight: 600, cursor: 'pointer' }}
                       onClick={() => fetchSettlementExpenses(s)}
                       title="Click to view details"
                     >
                       ₹{parseFloat(s.total_expenses).toLocaleString('en-IN')}
                     </td>
-                    <td style={{color: '#10b981', fontWeight: 800}}>₹{parseFloat(s.net_profit).toLocaleString('en-IN')}</td>
+                    <td style={{ color: '#10b981', fontWeight: 800 }}>₹{parseFloat(s.net_profit).toLocaleString('en-IN')}</td>
                     <td>
-                      <div style={{display: 'flex', justifyContent: 'center'}}>
-                        <button className="history-filter-btn" onClick={() => fetchSettlementExpenses(s)} style={{fontSize: '0.75rem'}}>
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <button className="history-filter-btn" onClick={() => fetchSettlementExpenses(s)} style={{ fontSize: '0.75rem' }}>
                           View Expenses
                         </button>
                       </div>
@@ -993,41 +993,41 @@ const AdminDashboard = ({ onLogout }) => {
         {/* Left Column: Form */}
         <div className="expense-card">
           <h3 className="expense-card-title">Add New Expense</h3>
-          
+
           <div className="expense-form-group">
             <label>Expense Name</label>
-            <input 
-              type="text" 
-              className="expense-input" 
-              placeholder="e.g. Rent, Electricity" 
-              value={newExpenseName} 
+            <input
+              type="text"
+              className="expense-input"
+              placeholder="e.g. Rent, Electricity"
+              value={newExpenseName}
               onChange={(e) => setNewExpenseName(e.target.value)}
             />
           </div>
 
           <div className="expense-form-group">
             <label>Amount (₹)</label>
-            <input 
-              type="number" 
-              className="expense-input" 
-              placeholder="0.00" 
-              value={newExpenseAmount} 
+            <input
+              type="number"
+              className="expense-input"
+              placeholder="0.00"
+              value={newExpenseAmount}
               onChange={(e) => setNewExpenseAmount(e.target.value)}
             />
           </div>
 
           <div className="expense-form-group">
             <label>Date</label>
-            <input 
-              type="date" 
-              className="expense-input" 
-              value={newExpenseDate} 
+            <input
+              type="date"
+              className="expense-input"
+              value={newExpenseDate}
               onChange={(e) => setNewExpenseDate(e.target.value)}
             />
           </div>
 
-          <button 
-            className="expense-submit-btn" 
+          <button
+            className="expense-submit-btn"
             onClick={handleAddExpense}
             disabled={isLoading || !newExpenseName.trim() || !newExpenseAmount}
           >
@@ -1038,7 +1038,7 @@ const AdminDashboard = ({ onLogout }) => {
         {/* Right Column: List */}
         <div className="expense-card">
           <h3 className="expense-card-title">Recent Expenses</h3>
-          
+
           <div className="expense-list-container">
             <table className="expense-table">
               <thead>
@@ -1046,13 +1046,13 @@ const AdminDashboard = ({ onLogout }) => {
                   <th>Name</th>
                   <th>Amount (₹)</th>
                   <th>Date</th>
-                  <th style={{textAlign: 'center'}}>Action</th>
+                  <th style={{ textAlign: 'center' }}>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {expenses.length === 0 ? (
                   <tr>
-                    <td colSpan="4" style={{textAlign: 'center', padding: '3rem', color: '#a1a5b7'}}>
+                    <td colSpan="4" style={{ textAlign: 'center', padding: '3rem', color: '#a1a5b7' }}>
                       No expenses found.
                     </td>
                   </tr>
@@ -1063,7 +1063,7 @@ const AdminDashboard = ({ onLogout }) => {
                       <td className="exp-amount">₹{parseFloat(exp.amount).toLocaleString('en-IN')}</td>
                       <td className="exp-date">{new Date(exp.created_at).toLocaleDateString('en-GB')}</td>
                       <td>
-                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
                           <button className="exp-delete-btn" onClick={() => setDeletingExpenseId(exp.id)}>
                             <Trash2 size={16} />
                           </button>
@@ -1105,11 +1105,11 @@ const AdminDashboard = ({ onLogout }) => {
             <span className="admin-settings-card-title">Menu Management</span>
             <span className="admin-settings-badge gray">Inventory</span>
           </div>
-          
+
           <button className="btn-primary-purple" onClick={() => setIsAddItemOpen(true)}>
             + Add Item
           </button>
-          
+
           <button className="btn-secondary-white" onClick={() => setIsViewMenuOpen(true)}>
             <Eye size={16} /> View Menu ({menuItems.length})
           </button>
@@ -1126,7 +1126,7 @@ const AdminDashboard = ({ onLogout }) => {
           </div>
         </div>
       </div>
-      
+
       <div className="bottom-save-container">
         <button className="save-all-btn">Save All Changes</button>
       </div>
@@ -1137,7 +1137,7 @@ const AdminDashboard = ({ onLogout }) => {
     <div className={`admin-dashboard ${isMobileSidebarOpen ? 'sidebar-open' : ''}`}>
       {/* Mobile Sidebar Overlay */}
       {isMobileSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsMobileSidebarOpen(false)}></div>}
-      
+
       <aside className={`admin-sidebar ${isMobileSidebarOpen ? 'show' : ''}`}>
         <div className="admin-sidebar-header">
           <div className="admin-logo-icon">P</div>
@@ -1158,13 +1158,13 @@ const AdminDashboard = ({ onLogout }) => {
         <div className={`admin-menu-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => { handleTabClick('settings'); setIsMobileSidebarOpen(false); }}>
           <Settings size={20} /><span>Settings</span><Lock size={14} className="lock-icon" />
         </div>
-        
+
         <div className="admin-sidebar-footer">
-          <div 
+          <div
             onClick={() => window.open(window.location.origin + '/superadmin', '_blank')}
-            style={{ 
-              fontSize: '10px', color: '#a1a5b7', textAlign: 'center', 
-              cursor: 'default', padding: '5px', opacity: 0.3 
+            style={{
+              fontSize: '10px', color: '#a1a5b7', textAlign: 'center',
+              cursor: 'default', padding: '5px', opacity: 0.3
             }}
           >
             Super Admin View
@@ -1200,7 +1200,7 @@ const AdminDashboard = ({ onLogout }) => {
               <h2>Menu Configuration</h2>
               <button className="close-modal-btn" onClick={() => setIsAddItemOpen(false)}><X size={24} /></button>
             </div>
-            
+
             <div className="modal-section">
               <h3 className="modal-section-title">1. Create Category</h3>
               <div className="modal-form-row">
@@ -1216,7 +1216,7 @@ const AdminDashboard = ({ onLogout }) => {
 
             <div className="modal-section">
               <h3 className="modal-section-title">2. Add Menu Item</h3>
-              <div className="modal-form-row" style={{marginBottom: '1rem'}}>
+              <div className="modal-form-row" style={{ marginBottom: '1rem' }}>
                 <div className="modal-form-group">
                   <label>Select Category</label>
                   <select className="modal-form-input" value={itemCategoryId} onChange={(e) => setItemCategoryId(e.target.value)}>
@@ -1228,11 +1228,11 @@ const AdminDashboard = ({ onLogout }) => {
                 </div>
               </div>
               <div className="modal-form-row">
-                <div className="modal-form-group" style={{flex: 2}}>
+                <div className="modal-form-group" style={{ flex: 2 }}>
                   <label>Item Name</label>
                   <input type="text" className="modal-form-input" placeholder="e.g. Cappuccino" value={newItemName} onChange={(e) => setNewItemName(e.target.value)} />
                 </div>
-                <div className="modal-form-group" style={{flex: 1}}>
+                <div className="modal-form-group" style={{ flex: 1 }}>
                   <label>Price (₹)</label>
                   <input type="number" className="modal-form-input" placeholder="150" value={newItemPrice} onChange={(e) => setNewItemPrice(e.target.value)} />
                 </div>
@@ -1253,7 +1253,7 @@ const AdminDashboard = ({ onLogout }) => {
               <h2>Current Menu</h2>
               <button className="close-modal-btn" onClick={() => setIsViewMenuOpen(false)}><X size={24} /></button>
             </div>
-            
+
             {menuItems.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '2rem', color: '#a1a5b7' }}>No items in the menu yet. Add some first!</div>
             ) : (
@@ -1266,24 +1266,24 @@ const AdminDashboard = ({ onLogout }) => {
                       <div className="menu-group-header-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #eef0f5', marginBottom: '0.8rem', paddingBottom: '0.4rem' }}>
                         <h3 className="menu-group-title" style={{ borderBottom: 'none', margin: 0, padding: 0 }}>{cat.name}</h3>
                         <div className="cat-action-btns" style={{ display: 'flex', gap: '10px' }}>
-                          <button 
-                            className="icon-action-btn edit" 
-                            onClick={() => { setEditingCatId(cat.id); setEditCatName(cat.name); setIsEditCatModalOpen(true); }} 
-                            title="Rename Category" 
-                            style={{ 
-                              padding: '6px', backgroundColor: '#f3f6ff', border: 'none', borderRadius: '6px', 
-                              cursor: 'pointer', color: '#6366f1', display: 'flex', alignItems: 'center' 
+                          <button
+                            className="icon-action-btn edit"
+                            onClick={() => { setEditingCatId(cat.id); setEditCatName(cat.name); setIsEditCatModalOpen(true); }}
+                            title="Rename Category"
+                            style={{
+                              padding: '6px', backgroundColor: '#f3f6ff', border: 'none', borderRadius: '6px',
+                              cursor: 'pointer', color: '#6366f1', display: 'flex', alignItems: 'center'
                             }}
                           >
                             <Pencil size={16} />
                           </button>
-                          <button 
-                            className="icon-action-btn delete" 
-                            onClick={() => handleDeleteCategory(cat.id)} 
+                          <button
+                            className="icon-action-btn delete"
+                            onClick={() => handleDeleteCategory(cat.id)}
                             title="Delete Category"
-                            style={{ 
-                              padding: '6px', backgroundColor: '#fff5f8', border: 'none', borderRadius: '6px', 
-                              cursor: 'pointer', color: '#f1416c', display: 'flex', alignItems: 'center' 
+                            style={{
+                              padding: '6px', backgroundColor: '#fff5f8', border: 'none', borderRadius: '6px',
+                              cursor: 'pointer', color: '#f1416c', display: 'flex', alignItems: 'center'
                             }}
                           >
                             <Trash2 size={16} />
@@ -1294,19 +1294,19 @@ const AdminDashboard = ({ onLogout }) => {
                         {catItems.map(item => (
                           <div key={item.id} className="menu-item-card">
                             <span className="item-name">{item.name}</span>
-                            
+
                             {editingItemId === item.id ? (
                               <div className="inline-edit-group">
                                 <span className="currency-symbol">₹</span>
-                                <input 
-                                  type="number" 
-                                  className="inline-edit-input" 
-                                  value={editItemPrice} 
-                                  onChange={(e) => setEditItemPrice(e.target.value)} 
-                                  autoFocus 
+                                <input
+                                  type="number"
+                                  className="inline-edit-input"
+                                  value={editItemPrice}
+                                  onChange={(e) => setEditItemPrice(e.target.value)}
+                                  autoFocus
                                 />
                                 <button className="inline-save-btn" onClick={() => handleUpdateMenuItem(item.id)}>Save</button>
-                                <button className="inline-cancel-btn" onClick={() => setEditingItemId(null)}><X size={14}/></button>
+                                <button className="inline-cancel-btn" onClick={() => setEditingItemId(null)}><X size={14} /></button>
                               </div>
                             ) : (
                               <div className="item-price-row">
@@ -1348,35 +1348,35 @@ const AdminDashboard = ({ onLogout }) => {
               </div>
               <button className="close-modal-btn" onClick={() => setIsNewOrderOpen(false)}><X size={24} /></button>
             </div>
-        
+
             <div className="new-order-layout">
               {/* Left Side: Categories & Menu */}
               <div className="new-order-left">
                 {/* Search and Filter Inputs (Sticky) */}
-                <div className="order-filter-header sticky-filters" style={{ 
-                  position: 'sticky', 
-                  top: 0, 
-                  backgroundColor: '#fff', 
-                  zIndex: 10, 
-                  padding: '0.8rem 0', 
+                <div className="order-filter-header sticky-filters" style={{
+                  position: 'sticky',
+                  top: 0,
+                  backgroundColor: '#fff',
+                  zIndex: 10,
+                  padding: '0.8rem 0',
                   marginBottom: '1rem',
-                  display: 'flex', 
-                  flexDirection: 'column', 
+                  display: 'flex',
+                  flexDirection: 'column',
                   gap: '0.8rem',
                   borderBottom: '1px solid #f8f9fa'
                 }}>
                   <div className="search-box order-search" style={{ position: 'relative' }}>
                     <Search className="search-icon-pos" size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#a1a5b7' }} />
-                    <input 
-                      type="text" 
-                      placeholder="Search menu..." 
+                    <input
+                      type="text"
+                      placeholder="Search menu..."
                       className="order-search-input"
                       value={orderSearch}
                       onChange={(e) => setOrderSearch(e.target.value)}
                       style={{ padding: '0.6rem 2.2rem 0.6rem 2.2rem', width: '100%', borderRadius: '8px', fontSize: '0.85rem' }}
                     />
                     {orderSearch && (
-                      <button 
+                      <button
                         className="clear-search-btn"
                         onClick={() => setOrderSearch('')}
                         title="Clear search"
@@ -1386,9 +1386,9 @@ const AdminDashboard = ({ onLogout }) => {
                       </button>
                     )}
                   </div>
-                  
+
                   <div className="category-filter-pills" style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.2rem', scrollbarWidth: 'none' }}>
-                    <button 
+                    <button
                       className={`pill-btn ${orderCategory === 'All' ? 'active' : ''}`}
                       onClick={() => setOrderCategory('All')}
                       style={{ padding: '0.4rem 1rem', borderRadius: '50px', border: '1px solid #eef0f5', cursor: 'pointer', whiteSpace: 'nowrap', fontWeight: 600, fontSize: '0.8rem', background: orderCategory === 'All' ? '#6366f1' : '#fff', color: orderCategory === 'All' ? '#fff' : '#5e6278' }}
@@ -1396,8 +1396,8 @@ const AdminDashboard = ({ onLogout }) => {
                       All Items
                     </button>
                     {categories.map(cat => (
-                      <button 
-                        key={cat.id} 
+                      <button
+                        key={cat.id}
                         className={`pill-btn ${orderCategory === cat.name ? 'active' : ''}`}
                         onClick={() => setOrderCategory(cat.name)}
                         style={{ padding: '0.4rem 1rem', borderRadius: '50px', border: '1px solid #eef0f5', cursor: 'pointer', whiteSpace: 'nowrap', fontWeight: 600, fontSize: '0.8rem', background: orderCategory === cat.name ? '#6366f1' : '#fff', color: orderCategory === cat.name ? '#fff' : '#5e6278' }}
@@ -1412,30 +1412,30 @@ const AdminDashboard = ({ onLogout }) => {
                   {categories
                     .filter(cat => orderCategory === 'All' || orderCategory === cat.name)
                     .map(cat => {
-                    const filteredItems = menuItems.filter(item => 
-                      item.category_id === cat.id && 
-                      item.name.toLowerCase().includes(orderSearch.toLowerCase())
-                    );
-                    
-                    if (filteredItems.length === 0) return null;
+                      const filteredItems = menuItems.filter(item =>
+                        item.category_id === cat.id &&
+                        item.name.toLowerCase().includes(orderSearch.toLowerCase())
+                      );
 
-                    return (
-                      <div key={cat.id} className="menu-group">
-                        <h3 className="order-category-title">{cat.name}</h3>
-                        <div className="order-items-grid">
-                          {filteredItems.map(item => (
-                            <div key={item.id} className="order-item-card" onClick={() => addToCart(item)}>
-                              <span className="name">{item.name}</span>
-                              <span className="price">₹{item.price}</span>
-                            </div>
-                          ))}
+                      if (filteredItems.length === 0) return null;
+
+                      return (
+                        <div key={cat.id} className="menu-group">
+                          <h3 className="order-category-title">{cat.name}</h3>
+                          <div className="order-items-grid">
+                            {filteredItems.map(item => (
+                              <div key={item.id} className="order-item-card" onClick={() => addToCart(item)}>
+                                <span className="name">{item.name}</span>
+                                <span className="price">₹{item.price}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
               </div>
-              
+
               {/* Right Side: Cart */}
               <div className="new-order-right">
                 <h3 className="cart-title">Order Cart</h3>
@@ -1458,17 +1458,17 @@ const AdminDashboard = ({ onLogout }) => {
                     ))
                   )}
                 </div>
-                
+
                 <div className="cart-footer" style={{ padding: '0.6rem 1rem' }}>
                   <div className="payment-mode-selector" style={{ marginBottom: '0.4rem', display: 'flex', gap: '0.4rem' }}>
-                    <button 
+                    <button
                       className={`mode-btn ${paymentMode === 'Cash' ? 'active' : ''}`}
                       onClick={() => setPaymentMode('Cash')}
                       style={{ flex: 1, padding: '0.4rem', borderRadius: '6px', cursor: 'pointer', border: '1px solid #eef0f5', fontSize: '0.8rem', fontWeight: 600, backgroundColor: paymentMode === 'Cash' ? '#1e1e2d' : '#fff', color: paymentMode === 'Cash' ? '#fff' : '#5e6278' }}
                     >
                       Cash
                     </button>
-                    <button 
+                    <button
                       className={`mode-btn ${paymentMode === 'Online' ? 'active' : ''}`}
                       onClick={() => setPaymentMode('Online')}
                       style={{ flex: 1, padding: '0.4rem', borderRadius: '6px', cursor: 'pointer', border: '1px solid #eef0f5', fontSize: '0.8rem', fontWeight: 600, backgroundColor: paymentMode === 'Online' ? '#1e1e2d' : '#fff', color: paymentMode === 'Online' ? '#fff' : '#5e6278' }}
@@ -1476,30 +1476,30 @@ const AdminDashboard = ({ onLogout }) => {
                       Online
                     </button>
                   </div>
-                  
+
                   {/* Small Discount Toggle Button */}
                   <div className="cart-discount-section" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.4rem 0' }}>
-                    <button 
-                      className="add-discount-link" 
+                    <button
+                      className="add-discount-link"
                       onClick={() => { setTempDiscount(billDiscount); setIsDiscountModalOpen(true); }}
-                      style={{ 
-                        background: 'none', 
-                        border: 'none', 
-                        color: billDiscount > 0 ? '#10b981' : '#6366f1', 
-                        fontSize: '0.8rem', 
-                        fontWeight: 700, 
-                        cursor: 'pointer', 
-                        padding: '0', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '0.3rem' 
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: billDiscount > 0 ? '#10b981' : '#6366f1',
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        padding: '0',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.3rem'
                       }}
                     >
                       {billDiscount > 0 ? <Pencil size={12} /> : <Plus size={12} />}
                       {billDiscount > 0 ? `Edit Discount (${billDiscount}%)` : 'Add Discount (%)'}
                     </button>
                     {billDiscount > 0 && (
-                      <button 
+                      <button
                         onClick={() => setBillDiscount(0)}
                         style={{ background: 'none', border: 'none', color: '#ef4444', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', padding: '0' }}
                       >
@@ -1527,8 +1527,8 @@ const AdminDashboard = ({ onLogout }) => {
                     </div>
                   </div>
 
-                  <button 
-                    className="gen-bill-btn" 
+                  <button
+                    className="gen-bill-btn"
                     style={{
                       width: '100%',
                       marginTop: '0.6rem',
@@ -1562,22 +1562,22 @@ const AdminDashboard = ({ onLogout }) => {
               <div className="detail-header-left">
                 <h2>Order Details</h2>
                 <span className="detail-time">
-                  {new Date(viewingOrder.created_at).toLocaleString('en-GB', { 
-                    day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true 
+                  {new Date(viewingOrder.created_at).toLocaleString('en-GB', {
+                    day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true
                   })}
                 </span>
               </div>
               <div className="detail-header-actions" style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
-                <button 
-                  className="reprint-header-btn" 
+                <button
+                  className="reprint-header-btn"
                   onClick={() => handleReprintOrder(viewingOrder)}
                   title="Re-print Receipt"
-                  style={{ 
-                    background: 'rgba(99, 102, 241, 0.1)', 
-                    color: '#6366f1', 
-                    border: 'none', 
-                    padding: '0.6rem', 
-                    borderRadius: '8px', 
+                  style={{
+                    background: 'rgba(99, 102, 241, 0.1)',
+                    color: '#6366f1',
+                    border: 'none',
+                    padding: '0.6rem',
+                    borderRadius: '8px',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -1597,8 +1597,8 @@ const AdminDashboard = ({ onLogout }) => {
               <div className="detail-items-list">
                 <div className="detail-item-header">
                   <span>Item Name</span>
-                  <span style={{textAlign: 'center'}}>Qty</span>
-                  <span style={{textAlign: 'right'}}>Price</span>
+                  <span style={{ textAlign: 'center' }}>Qty</span>
+                  <span style={{ textAlign: 'right' }}>Price</span>
                 </div>
                 {viewingOrder.order_items && viewingOrder.order_items.map((item, idx) => (
                   <div key={idx} className="detail-item-row">
@@ -1608,14 +1608,14 @@ const AdminDashboard = ({ onLogout }) => {
                   </div>
                 ))}
               </div>
-              
+
               <div className="detail-footer">
                 <div className="price-summary">
                   <div className="summary-line" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem', color: '#5e6278', fontSize: '0.9rem' }}>
                     <span>Subtotal</span>
                     <span>₹{(viewingOrder.order_items?.reduce((acc, mi) => acc + (mi.price_at_time * mi.qty), 0) || 0).toLocaleString('en-IN')}</span>
                   </div>
-                  
+
                   {parseFloat(viewingOrder.discount || 0) > 0 && (
                     <div className="summary-line" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem', color: '#ef4444', fontSize: '0.9rem' }}>
                       <span>Discount</span>
@@ -1648,8 +1648,8 @@ const AdminDashboard = ({ onLogout }) => {
               <Trash2 size={32} />
             </div>
             <h2>Are you sure?</h2>
-            <p style={{color: '#5e6278', marginTop: '0.5rem'}}>Do you really want to delete this expense? This action cannot be undone.</p>
-            
+            <p style={{ color: '#5e6278', marginTop: '0.5rem' }}>Do you really want to delete this expense? This action cannot be undone.</p>
+
             <div className="confirm-modal-btns">
               <button className="confirm-btn-cancel" onClick={() => setDeletingExpenseId(null)}>Cancel</button>
               <button className="confirm-btn-delete" onClick={handleDeleteExpense} disabled={isLoading}>
@@ -1664,17 +1664,17 @@ const AdminDashboard = ({ onLogout }) => {
       {isSettleConfirmOpen && (
         <div className="modal-overlay" onClick={() => setIsSettleConfirmOpen(false)}>
           <div className="modal-content confirm-modal-content" onClick={e => e.stopPropagation()}>
-            <div className="confirm-icon-container" style={{backgroundColor: '#eef2ff', color: '#6366f1'}}>
+            <div className="confirm-icon-container" style={{ backgroundColor: '#eef2ff', color: '#6366f1' }}>
               <CalendarDays size={32} />
             </div>
             <h2>Settle This Month?</h2>
-            <p style={{color: '#5e6278', marginTop: '0.5rem'}}>
+            <p style={{ color: '#5e6278', marginTop: '0.5rem' }}>
               This will archive all current sales and expenses. Your dashboard counters will reset to ₹0 for the new period.
             </p>
-            
+
             <div className="confirm-modal-btns">
               <button className="confirm-btn-cancel" onClick={() => setIsSettleConfirmOpen(false)}>Cancel</button>
-              <button className="confirm-btn-delete" onClick={handleSettleMonth} disabled={isLoading} style={{backgroundColor: '#6366f1'}}>
+              <button className="confirm-btn-delete" onClick={handleSettleMonth} disabled={isLoading} style={{ backgroundColor: '#6366f1' }}>
                 {isLoading ? 'Settling...' : 'Confirm Settlement'}
               </button>
             </div>
@@ -1693,19 +1693,19 @@ const AdminDashboard = ({ onLogout }) => {
               </div>
               <button className="close-expense-modal" onClick={() => setViewingSettlementExpenses(null)}><X size={20} /></button>
             </div>
-            
+
             <div className="expense-detail-body">
               <table className="expense-detail-table">
                 <thead>
                   <tr>
                     <th>DATE</th>
                     <th>DESCRIPTION</th>
-                    <th style={{textAlign: 'right'}}>AMOUNT</th>
+                    <th style={{ textAlign: 'right' }}>AMOUNT</th>
                   </tr>
                 </thead>
                 <tbody>
                   {viewingSettlementExpenses.length === 0 ? (
-                    <tr><td colSpan="3" style={{textAlign: 'center', padding: '3rem', color: '#a1a5b7'}}>No expenses recorded.</td></tr>
+                    <tr><td colSpan="3" style={{ textAlign: 'center', padding: '3rem', color: '#a1a5b7' }}>No expenses recorded.</td></tr>
                   ) : (
                     viewingSettlementExpenses.map(exp => (
                       <tr key={exp.id}>
@@ -1735,22 +1735,22 @@ const AdminDashboard = ({ onLogout }) => {
               <div className="detail-header-left">
                 <h2>Order Details</h2>
                 <span className="detail-time">
-                  {new Date(viewingOrder.created_at).toLocaleString('en-GB', { 
-                    day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true 
+                  {new Date(viewingOrder.created_at).toLocaleString('en-GB', {
+                    day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true
                   })}
                 </span>
               </div>
               <div className="detail-header-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                <button 
-                  className="reprint-header-btn" 
+                <button
+                  className="reprint-header-btn"
                   onClick={() => handleReprintOrder(viewingOrder)}
                   title="Re-print Receipt"
-                  style={{ 
-                    background: 'rgba(99, 102, 241, 0.1)', 
-                    color: '#6366f1', 
-                    border: 'none', 
-                    padding: '0.6rem', 
-                    borderRadius: '8px', 
+                  style={{
+                    background: 'rgba(99, 102, 241, 0.1)',
+                    color: '#6366f1',
+                    border: 'none',
+                    padding: '0.6rem',
+                    borderRadius: '8px',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -1767,8 +1767,8 @@ const AdminDashboard = ({ onLogout }) => {
             <div className="detail-body">
               <div className="detail-item-header">
                 <span>ITEMS</span>
-                <span style={{textAlign: 'center'}}>QTY</span>
-                <span style={{textAlign: 'right'}}>AMOUNT</span>
+                <span style={{ textAlign: 'center' }}>QTY</span>
+                <span style={{ textAlign: 'right' }}>AMOUNT</span>
               </div>
               <div className="detail-items-list">
                 {viewingOrder.order_items?.map((item, idx) => (
@@ -1779,14 +1779,14 @@ const AdminDashboard = ({ onLogout }) => {
                   </div>
                 ))}
               </div>
-              
+
               <div className="detail-footer">
                 <div className="price-summary">
                   <div className="summary-line" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem', color: '#5e6278', fontSize: '0.9rem' }}>
                     <span>Subtotal</span>
                     <span>₹{(viewingOrder.order_items?.reduce((acc, mi) => acc + (mi.price_at_time * mi.qty), 0) || 0).toLocaleString('en-IN')}</span>
                   </div>
-                  
+
                   {parseFloat(viewingOrder.discount || 0) > 0 && (
                     <div className="summary-line" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem', color: '#ef4444', fontSize: '0.9rem' }}>
                       <span>Discount</span>
@@ -1819,10 +1819,10 @@ const AdminDashboard = ({ onLogout }) => {
             <div className="modal-form-group" style={{ marginBottom: '1.5rem' }}>
               <label>Discount Percentage (%)</label>
               <div style={{ position: 'relative' }}>
-                <input 
-                  type="number" 
-                  className="modal-form-input" 
-                  placeholder="e.g. 10" 
+                <input
+                  type="number"
+                  className="modal-form-input"
+                  placeholder="e.g. 10"
                   autoFocus
                   value={tempDiscount === 0 ? '' : tempDiscount}
                   onChange={(e) => {
@@ -1835,16 +1835,16 @@ const AdminDashboard = ({ onLogout }) => {
               </div>
             </div>
             <div style={{ display: 'flex', gap: '1rem' }}>
-              <button 
-                className="btn-secondary-white" 
-                style={{ flex: 1 }} 
+              <button
+                className="btn-secondary-white"
+                style={{ flex: 1 }}
                 onClick={() => setIsDiscountModalOpen(false)}
               >
                 Cancel
               </button>
-              <button 
-                className="btn-primary-purple" 
-                style={{ flex: 1, backgroundColor: '#10b981' }} 
+              <button
+                className="btn-primary-purple"
+                style={{ flex: 1, backgroundColor: '#10b981' }}
                 onClick={() => { setBillDiscount(tempDiscount); setIsDiscountModalOpen(false); }}
               >
                 Apply
@@ -1865,8 +1865,9 @@ const AdminDashboard = ({ onLogout }) => {
           <div className="print-bill-section">
 
             {/* ── CAFE HEADER ── */}
-            <div className="receipt-cafe-name">YB'S Cafe</div>
-            <div className="receipt-cafe-address">Marunji Road, Hinjawadi Phase 1, Pune</div>
+            <div className="receipt-cafe-name">YB's Cafe Terrace</div>
+            <div className="receipt-cafe-address">YB Legacy, Deepak Nagar, Marunji, Pune</div>
+            <div className="receipt-cafe-address">Phone: +91 96570 47878</div>
 
             <hr className="receipt-header-divider" />
 
@@ -1990,14 +1991,14 @@ const AdminDashboard = ({ onLogout }) => {
                 <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#5e6278' }}>Password Required</label>
                 <div className="input-wrapper" style={{ marginTop: '0.5rem' }}>
                   <Lock size={16} className="input-icon" style={{ left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#a1a5b7' }} />
-                  <input 
-                    type="password" 
-                    className="modal-form-input" 
+                  <input
+                    type="password"
+                    className="modal-form-input"
                     placeholder="••••••••"
                     value={sectionPassword}
                     onChange={(e) => setSectionPassword(e.target.value)}
                     autoFocus
-                    style={{ padding: '12px 12px 12px 40px', fontSize: '1rem', border: '1px solid #eef0f5', color: '#1e1e2d' }} 
+                    style={{ padding: '12px 12px 12px 40px', fontSize: '1rem', border: '1px solid #eef0f5', color: '#1e1e2d' }}
                   />
                 </div>
               </div>
@@ -2019,19 +2020,19 @@ const AdminDashboard = ({ onLogout }) => {
             </div>
             <div className="modal-form-group" style={{ padding: '0 1.5rem' }}>
               <label>Category Name</label>
-              <input 
-                type="text" 
-                className="modal-form-input" 
-                value={editCatName} 
-                onChange={(e) => setEditCatName(e.target.value)} 
+              <input
+                type="text"
+                className="modal-form-input"
+                value={editCatName}
+                onChange={(e) => setEditCatName(e.target.value)}
                 autoFocus
                 style={{ marginTop: '0.5rem' }}
               />
             </div>
             <div className="modal-actions" style={{ marginTop: '1.5rem', padding: '1.5rem', borderTop: '1px solid #eef0f5' }}>
-              <button 
-                className="modal-btn-add" 
-                style={{ width: '100%', margin: 0 }} 
+              <button
+                className="modal-btn-add"
+                style={{ width: '100%', margin: 0 }}
                 onClick={() => handleUpdateCategory(editingCatId)}
                 disabled={isLoading}
               >
