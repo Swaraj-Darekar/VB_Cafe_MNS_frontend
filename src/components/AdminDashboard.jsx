@@ -5,7 +5,7 @@ import {
   User, Calendar, ChevronDown, Coffee, Coins, WalletCards,
   CalendarDays, TrendingDown, TrendingUp, Trash2, Eye, X,
   Plus, Minus, ShoppingCart, Search, Pencil, CreditCard, Info, Printer,
-  AlertTriangle, Menu
+  AlertTriangle, Menu, RefreshCcw
 } from 'lucide-react';
 import './AdminDashboard.css';
 import './History.css';
@@ -30,6 +30,7 @@ const AdminDashboard = ({ onLogout }) => {
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [orderHistory, setOrderHistory] = useState([]);
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
   const [walletBalance, setWalletBalance] = useState(null); // Init to null to avoid "blocked" state on load
   const [expenses, setExpenses] = useState([]);
   const [settlements, setSettlements] = useState([]);
@@ -199,12 +200,15 @@ const AdminDashboard = ({ onLogout }) => {
 
   // Fetch Order History
   const fetchOrderHistory = async () => {
+    setIsHistoryLoading(true);
     try {
       const res = await fetch(`${API_URL}/orders`);
       const data = await res.json();
       if (data.data) setOrderHistory(data.data);
     } catch (err) {
       console.error("Failed to fetch orders", err);
+    } finally {
+      setIsHistoryLoading(false);
     }
   };
 
@@ -303,7 +307,7 @@ const AdminDashboard = ({ onLogout }) => {
       }
 
       groups[dateKey].orders.push(order);
-      groups[dateKey].totalAmount += parseFloat(order.total_amount);
+      groups[dateKey].totalAmount += parseFloat(order.total_amount || 0);
       if (order.payment_mode === 'Online') groups[dateKey].onlineCount++;
       else groups[dateKey].cashCount++;
     });
@@ -603,6 +607,7 @@ const AdminDashboard = ({ onLogout }) => {
         clearCart();
         fetchWalletBalance();
         fetchAnalyticsSummary();
+        fetchOrderHistory();
 
         // Auto-print after state reflects
         setTimeout(() => {
@@ -799,7 +804,22 @@ const AdminDashboard = ({ onLogout }) => {
               <span>Detailed record of all table sessions and takeaways</span>
             </div>
           </div>
-          <button className="history-filter-btn">Last 30 Days</button>
+          <div className="history-right-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <button 
+              className={`history-refresh-btn ${isHistoryLoading ? 'loading' : ''}`} 
+              onClick={fetchOrderHistory}
+              disabled={isHistoryLoading}
+              title="Refresh History"
+              style={{
+                background: '#fff', border: '1px solid #eef0f5', borderRadius: '50%', width: '40px', height: '40px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#6366f1',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <RefreshCcw size={18} className={isHistoryLoading ? 'animate-spin' : ''} />
+            </button>
+            <button className="history-filter-btn">Last 30 Days</button>
+          </div>
         </div>
 
         <div className="history-accordion">
