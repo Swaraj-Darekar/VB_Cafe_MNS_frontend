@@ -27,7 +27,6 @@ body {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -354,3 +353,4 @@ body {
     padding-bottom: 4mm !important;
   }
 }
+

@@ -8,7 +8,6 @@ import {
   AlertTriangle, Menu, RefreshCcw
 } from 'lucide-react';
 import './AdminDashboard.css';
-import './History.css';
 import './Analytics.css';
 import './Expenses.css';
 import './AdminSettings.css';
@@ -282,6 +281,7 @@ const AdminDashboard = ({ onLogout }) => {
 
   // Helper to group History by Date
   const groupHistoryByDay = () => {
+    if (!Array.isArray(orderHistory)) return [];
     const groups = {};
 
     // Helper to get local date string YYYY-MM-DD
@@ -796,6 +796,9 @@ const AdminDashboard = ({ onLogout }) => {
 
     return (
       <div className="admin-dashboard-body">
+        {/* Failsafe Styles for History Section */}
+
+
         <div className="history-header">
           <div className="history-title-container">
             <h1>Session History</h1>
@@ -813,7 +816,7 @@ const AdminDashboard = ({ onLogout }) => {
               style={{
                 background: '#fff', border: '1px solid #eef0f5', borderRadius: '50%', width: '40px', height: '40px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#6366f1',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease', boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
               }}
             >
               <RefreshCcw size={18} className={isHistoryLoading ? 'animate-spin' : ''} />
@@ -822,15 +825,34 @@ const AdminDashboard = ({ onLogout }) => {
           </div>
         </div>
 
+        {/* History Accordion */}
         <div className="history-accordion">
-          {groupedDays.length === 0 ? (
-            <div className="empty-history">No orders found. Click "New Order" to start.</div>
+          {isHistoryLoading && orderHistory.length === 0 ? (
+            <div className="empty-history" style={{ backgroundColor: '#ffffff', border: '1px solid #eef0f5' }}>
+              <div className="animate-spin" style={{ marginBottom: '1rem', color: '#6366f1' }}><RefreshCcw size={32} /></div>
+              <p style={{ color: '#5e6278', fontWeight: 600 }}>Loading history...</p>
+            </div>
+          ) : groupedDays.length === 0 ? (
+            <div className="empty-history" style={{ backgroundColor: '#ffffff', border: '1px solid #eef0f5' }}>
+              <div style={{ marginBottom: '1rem', opacity: 0.2 }}><History size={48} /></div>
+              <p style={{ color: '#5e6278', fontWeight: 600 }}>No orders found for this period.</p>
+              <button className="btn-primary-purple" onClick={() => setIsNewOrderOpen(true)} style={{ marginTop: '1rem', padding: '0.6rem 1.2rem' }}>Create First Order</button>
+            </div>
           ) : (
             groupedDays.map(day => (
-              <div key={day.date} className={`day-group ${expandedDays.includes(day.date) ? 'is-expanded' : ''}`}>
-                <div className="day-header" onClick={() => toggleDay(day.date)}>
+              <div
+                key={day.date}
+                className={`day-group ${expandedDays.includes(day.date) ? 'is-expanded' : ''}`}
+                style={{ border: `1px solid ${expandedDays.includes(day.date) ? '#6366f1' : '#e2e8f0'}`, flexShrink: 0 }}
+              >
+                <div
+                  className="day-header"
+                  onClick={() => toggleDay(day.date)}
+                >
                   <div className="day-info">
-                    <span className="day-label">{day.label}</span>
+                    <span className="day-label">
+                      {day.label || 'Unknown Date'}
+                    </span>
                     <div className="day-summaries">
                       <div className="summary-pill online">
                         <CreditCard size={14} /> {day.onlineCount} Online
@@ -841,8 +863,13 @@ const AdminDashboard = ({ onLogout }) => {
                     </div>
                   </div>
                   <div className="day-right">
-                    <span className="day-total">₹{day.totalAmount.toLocaleString('en-IN')}</span>
-                    <ChevronDown className={`chevron ${expandedDays.includes(day.date) ? 'up' : ''}`} size={20} />
+                    <span className="day-total">
+                      ₹{day.totalAmount.toLocaleString('en-IN')}
+                    </span>
+                    <ChevronDown
+                      className={`chevron ${expandedDays.includes(day.date) ? 'up' : ''}`}
+                      size={20}
+                    />
                   </div>
                 </div>
 
@@ -851,23 +878,25 @@ const AdminDashboard = ({ onLogout }) => {
                     {day.orders.map(order => (
                       <div key={order.id} className="order-row">
                         <div className="order-time">
-                          <span style={{ fontWeight: 800, color: '#6366f1', marginRight: '10px' }}>
+                          <span className="order-token-no">
                             {order.token_no ? `#${order.token_no}` : `#${(order.id || '').slice(0, 4)}`}
                           </span>
-                          {new Date(order.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+                          <span className="order-time-text">
+                            {new Date(order.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+                          </span>
                         </div>
 
                         <div className="order-badges">
-                          <span className={`payment-badge ${order.payment_mode.toLowerCase()}`}>
+                          <span className={`payment-badge ${order.payment_mode === 'Online' ? 'online' : 'cash'}`}>
                             {order.payment_mode}
                           </span>
-                          <button className="info-btn" onClick={() => setViewingOrder(order)}>
+                          <button onClick={() => setViewingOrder(order)} className="info-btn" title="View Details">
                             <Info size={14} />
                           </button>
                         </div>
 
                         <div className="order-amount">
-                          ₹{parseFloat(order.total_amount).toLocaleString('en-IN')}
+                          ₹{parseFloat(order.total_amount || 0).toLocaleString('en-IN')}
                         </div>
                       </div>
                     ))}
@@ -1160,8 +1189,8 @@ const AdminDashboard = ({ onLogout }) => {
 
       <aside className={`admin-sidebar ${isMobileSidebarOpen ? 'show' : ''}`}>
         <div className="admin-sidebar-header">
-          <div className="admin-logo-icon">P</div>
-          <span className="admin-logo-title">PoolCafe</span>
+          <div className="admin-logo-icon">Y</div>
+          <span className="admin-logo-title">Yb's Cafe</span>
           <button className="mobile-close-sidebar" onClick={() => setIsMobileSidebarOpen(false)}>
             <X size={24} />
           </button>
