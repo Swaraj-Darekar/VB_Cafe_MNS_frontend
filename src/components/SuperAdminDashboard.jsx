@@ -27,8 +27,10 @@ const SuperAdminDashboard = ({ onLogout }) => {
   const [walletBalance, setWalletBalance] = useState(0);
   const [commissionRate, setCommissionRate] = useState(2.0);
   const [stats, setStats] = useState({ today: { count: 0 }, monthly: { count: 0 } });
+  const [settlements, setSettlements] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const [isSettling, setIsSettling] = useState(false);
 
   React.useEffect(() => {
     fetchInitialData();
@@ -36,19 +38,22 @@ const SuperAdminDashboard = ({ onLogout }) => {
 
   const fetchInitialData = async () => {
     try {
-      const [walletRes, settingsRes, analyticsRes] = await Promise.all([
+      const [walletRes, settingsRes, analyticsRes, settlementsRes] = await Promise.all([
         fetch(`${API_URL}/wallet/balance`),
         fetch(`${API_URL}/settings`),
-        fetch(`${API_URL}/analytics/summary`)
+        fetch(`${API_URL}/analytics/summary`),
+        fetch(`${API_URL}/settlements`)
       ]);
       
       const walletData = await walletRes.json();
       const settingsData = await settingsRes.json();
       const analyticsData = await analyticsRes.json();
+      const settlementsData = await settlementsRes.json();
 
       setWalletBalance(walletData.balance);
       setCommissionRate(settingsData.commission_rs || 2.0);
       setStats(analyticsData);
+      setSettlements(settlementsData.data || []);
     } catch (error) {
       console.error("Failed to fetch super admin data", error);
     }
@@ -127,6 +132,28 @@ const SuperAdminDashboard = ({ onLogout }) => {
     }
   };
 
+  const handleSettleMonth = async () => {
+    const confirmSettle = window.confirm("Are you sure you want to settle the current cycle? This will archive all current transactions and reset the dashboard counters.");
+    if (!confirmSettle) return;
+
+    setIsSettling(true);
+    try {
+      const res = await fetch(`${API_URL}/analytics/settle`, { method: 'POST' });
+      const data = await res.json();
+      
+      if (res.ok) {
+        alert(data.message || "Settlement completed successfully!");
+        await fetchInitialData();
+      } else {
+        alert("Settlement failed: " + (data.detail || "Unknown error"));
+      }
+    } catch (error) {
+      alert("Network error: Failed to complete settlement.");
+    } finally {
+      setIsSettling(false);
+    }
+  };
+
   const renderDashboard = () => (
     <>
       <div className="dashboard-header">
@@ -134,7 +161,13 @@ const SuperAdminDashboard = ({ onLogout }) => {
           <h1>Welcome, Super Admin</h1>
           <p>Global platform overview and cafe management.</p>
         </div>
-        <button className="monthly-settlement-btn">Monthly Settlement</button>
+        <button 
+          className="monthly-settlement-btn" 
+          onClick={handleSettleMonth} 
+          disabled={isSettling}
+        >
+          {isSettling ? 'Settling...' : 'Monthly Settlement'}
+        </button>
       </div>
 
       <div className="stats-grid">
@@ -205,10 +238,38 @@ const SuperAdminDashboard = ({ onLogout }) => {
         <div className="section-card">
           <div className="section-header">
             <h3>Settlement History</h3>
-            <span className="section-link">Refresh</span>
+            <span className="section-link" onClick={fetchInitialData}>Refresh</span>
           </div>
-          <div style={{ padding: '2rem', textAlign: 'center', color: '#a1a5b7' }}>
-            No recent settlements
+          <div className="settlement-list" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+            {settlements.length === 0 ? (
+              <div style={{ padding: '2rem', textAlign: 'center', color: '#a1a5b7' }}>
+                No recent settlements
+              </div>
+            ) : (
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ textAlign: 'left', borderBottom: '1px solid #f1f1f4', color: '#a1a5b7', fontSize: '0.8rem' }}>
+                    <th style={{ padding: '0.8rem' }}>MONTH</th>
+                    <th>SALES</th>
+                    <th>EARNINGS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {settlements.map((s) => (
+                    <tr key={s.id} style={{ borderBottom: '1px solid #f1f1f4', fontSize: '0.9rem' }}>
+                      <td style={{ padding: '0.8rem', fontWeight: 600 }}>{s.month_label}</td>
+                      <td>₹{parseFloat(s.total_sales).toLocaleString('en-IN')}</td>
+                      <td style={{ color: '#10b981', fontWeight: 700 }}>
+                        ₹{(parseFloat(s.total_sales) / (stats.monthly?.sales || 1) * (stats.monthly?.count || 0) * commissionRate).toFixed(0)} 
+                        {/* Note: This is an estimation since we don't store commission_total in settlement, 
+                            but we could if we wanted exact history. For now let's just show sales and profit. */}
+                        ₹{parseFloat(s.net_profit).toLocaleString('en-IN')} (Profit)
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
 
